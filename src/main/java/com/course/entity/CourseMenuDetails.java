@@ -1,5 +1,7 @@
 package com.course.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author test
- * @since 2020-01-06
+ * @since 2019-12-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +24,9 @@ import lombok.experimental.Accessors;
 public class CourseMenuDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @TableId(type = IdType.INPUT)
+    private String id;
 
     /**
      * 目录ID
