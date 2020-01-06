@@ -1,13 +1,10 @@
 package com.course.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.course.base.Ret;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @Description:
