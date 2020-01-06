@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * MybatisPlus配置
- * @author David
+ * @author
  */
 @Configuration
 public class MybatisPlusConfig {

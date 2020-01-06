@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 /**
  * 跨域配置
- * @author David
+ * @author
  */
 @Configuration
 public class CorsConfig {

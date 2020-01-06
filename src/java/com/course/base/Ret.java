@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 返回信息
  *
- * @author David
+ * @author
  */
 @ApiModel(value = "请求响应")
 public class Ret<T> implements Serializable {

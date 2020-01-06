@@ -3,7 +3,7 @@ package com.course.base;
 /**
  * 返回信息
  *
- * @author David
+ * @author
  */
 public class ResponseMessage<T> {
     private String respCode;

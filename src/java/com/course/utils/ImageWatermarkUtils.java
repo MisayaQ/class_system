@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * @author David
+ * @author
  */
 public class ImageWatermarkUtils {
 

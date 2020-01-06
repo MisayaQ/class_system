@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Swagger2配置类
- * @author David
+ * @author
  */
 @Configuration
 @EnableSwagger2
@@ -31,8 +31,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("收发文模块 RESTful APIs")
-                .description("收发文模块接口API文档")
+                .title("RESTful APIs")
+                .description("教学系统接口API文档")
                 .termsOfServiceUrl("http://localhost:80/")
                 .version("1.0")
                 .build();

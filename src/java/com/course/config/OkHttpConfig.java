@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * OkHttp 配置
  *
- * @author David
+ * @author
  * */
 @Configuration
 public class OkHttpConfig {
