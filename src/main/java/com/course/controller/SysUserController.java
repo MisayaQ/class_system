@@ -78,15 +78,16 @@ public class SysUserController {
             queryWrapper.eq("account",sysUser.getAccount());
             List<SysUser> getList = iSysUserService.list(queryWrapper);
             if (getList != null && !getList.isEmpty()) {
-                return Ret.error().setMsg("账号已存在");
-            } else {
-                sysUser.setUpdatedTime(LocalDateTime.now());
-                boolean result = iSysUserService.updateById(sysUser);
-                if (result) {
-                    return Ret.ok().setData(sysUser);
-                } else {
-                    return Ret.error().setMsg("修改失败");
+                if (getList.size() > 1 || (getList.size() == 1 && !sysUser.getId().equals(getList.get(0).getId()))) {
+                    return Ret.error().setMsg("账号已存在");
                 }
+            }
+            sysUser.setUpdatedTime(LocalDateTime.now());
+            boolean result = iSysUserService.updateById(sysUser);
+            if (result) {
+                return Ret.ok().setData(sysUser);
+            } else {
+                return Ret.error().setMsg("修改失败");
             }
         } else {
             return Ret.error().setMsg("账号不能为空");
@@ -117,6 +118,14 @@ public class SysUserController {
 //        queryWrapper.eq("ID",id);
         SysUser getInfo = iSysUserService.getById(id);
         return Ret.ok().setData(getInfo);
+    }
+
+    @ApiOperation(value="列表查询", notes="")
+    @GetMapping("/getUserByList")
+    public Ret getUserByList(SysUser sysUser) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        List<SysUser> getList = iSysUserService.list(queryWrapper);
+        return Ret.ok().setData(getList);
     }
 
 }
