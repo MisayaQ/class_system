@@ -35,8 +35,20 @@ public class SysUserController {
 
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getUserByPage")
-    public Ret getUserByPage(Integer page,Integer pageSize) {
+    public Ret getUserByPage(Integer page,Integer pageSize,SysUser sysUser) {
         QueryWrapper queryWrapper = new QueryWrapper();
+        if(StringUtils.isNotEmpty(sysUser.getUname())){
+            queryWrapper.like("uname",sysUser.getUname());
+        }
+        if(StringUtils.isNotEmpty(sysUser.getAccount())){
+            queryWrapper.like("account",sysUser.getAccount());
+        }
+        if(StringUtils.isNotEmpty(sysUser.getUserRole())){
+            queryWrapper.eq("user_role",sysUser.getUserRole());
+        }
+        if(sysUser.getValidFlag() != null){
+            queryWrapper.eq("valid_flag",sysUser.getValidFlag());
+        }
         Page pageInfo = new Page(page,pageSize);
         Page<SysUser> getList = iSysUserService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
