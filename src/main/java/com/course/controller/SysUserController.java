@@ -83,7 +83,7 @@ public class SysUserController {
 
     @ApiOperation(value="修改", notes="")
     @PutMapping("/updateUser")
-    public Ret updateUser(SysUser sysUser) {
+    public Ret updateUser(@RequestBody SysUser sysUser) {
         if (StringUtils.isNotEmpty(sysUser.getAccount())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
