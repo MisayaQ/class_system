@@ -4,7 +4,9 @@ package com.course.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
+import com.course.entity.SysCount;
 import com.course.entity.SysUser;
+import com.course.service.ISysCountService;
 import com.course.service.ISysUserService;
 import com.course.utils.StringUtil;
 import com.course.utils.UUIDUtil;
@@ -14,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,9 @@ public class SysUserController {
 
     @Autowired
     private ISysUserService iSysUserService;
+
+    @Autowired
+    private ISysCountService iSysCountService;
 
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getUserByPage")
@@ -163,7 +170,7 @@ public class SysUserController {
 
     @ApiOperation(value="登录", notes="")
     @GetMapping("/login")
-    public Ret login(String account,String password) {
+    public Ret login(String account,String password) throws Exception {
         if(StringUtils.isEmpty(account)){
             return Ret.error().setMsg("用户名不能为空");
         } else if (StringUtils.isEmpty(password)) {
@@ -177,6 +184,26 @@ public class SysUserController {
                 if (getInfo.get(0).getValidFlag() == 1) {
                     return Ret.error().setMsg("账号已被禁用");
                 } else {
+                    //增加访问量
+                    Date d = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateNowStr = sdf.format(d);
+//                    Date today = sdf.parse(dateNowStr);
+                    QueryWrapper queryCount = new QueryWrapper();
+                    queryCount.like("count_date",dateNowStr);
+                    List<SysCount> getCountList = iSysCountService.list(queryCount);
+                    if (getCountList != null && !getCountList.isEmpty()) {
+                        SysCount sysCount = getCountList.get(0);
+                        sysCount.setCounts(sysCount.getCounts() + 1);
+                        iSysCountService.updateById(sysCount);
+                    } else {
+                        SysCount sysCount = new SysCount();
+                        sysCount.setId(UUIDUtil.getUUID());
+                        sysCount.setCounts(1);
+                        sysCount.setCountDate(d);
+                        sysCount.setValidFlag("0");
+                        iSysCountService.save(sysCount);
+                    }
                     return Ret.ok().setData(getInfo.get(0));
                 }
             } else {
