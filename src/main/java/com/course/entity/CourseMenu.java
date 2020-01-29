@@ -83,5 +83,7 @@ public class CourseMenu implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("course_id")
+    private String courseId;
 
 }

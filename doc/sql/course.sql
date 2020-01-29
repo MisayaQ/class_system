@@ -1,26 +1,4 @@
-/*
- Navicat Premium Data Transfer
 
- Source Server         : localMySql
- Source Server Type    : MySQL
- Source Server Version : 80018
- Source Host           : localhost:3306
- Source Schema         : course
-
- Target Server Type    : MySQL
- Target Server Version : 80018
- File Encoding         : 65001
-
- Date: 27/12/2019 17:50:12
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for course_answer
--- ----------------------------
-DROP TABLE IF EXISTS `course_answer`;
 CREATE TABLE `course_answer`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `details_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程id',
@@ -35,10 +13,6 @@ CREATE TABLE `course_answer`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程回答表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_details
--- ----------------------------
-DROP TABLE IF EXISTS `course_details`;
 CREATE TABLE `course_details`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `c_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程名称',
@@ -57,10 +31,6 @@ CREATE TABLE `course_details`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程详情表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_file
--- ----------------------------
-DROP TABLE IF EXISTS `course_file`;
 CREATE TABLE `course_file`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `details_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程id',
@@ -78,10 +48,6 @@ CREATE TABLE `course_file`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程附件表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_menu
--- ----------------------------
-DROP TABLE IF EXISTS `course_menu`;
 CREATE TABLE `course_menu`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `menu_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '目录名称',
@@ -96,10 +62,6 @@ CREATE TABLE `course_menu`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程目录 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_menu_details
--- ----------------------------
-DROP TABLE IF EXISTS `course_menu_details`;
 CREATE TABLE `course_menu_details`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '目录ID',
@@ -107,10 +69,6 @@ CREATE TABLE `course_menu_details`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程目录-详情关联表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_purchase
--- ----------------------------
-DROP TABLE IF EXISTS `course_purchase`;
 CREATE TABLE `course_purchase`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `details_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程id',
@@ -123,10 +81,6 @@ CREATE TABLE `course_purchase`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程购买记录表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for course_question
--- ----------------------------
-DROP TABLE IF EXISTS `course_question`;
 CREATE TABLE `course_question`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `details_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程id',
@@ -140,10 +94,6 @@ CREATE TABLE `course_question`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程问题表 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for sys_notice
--- ----------------------------
-DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '标题',
@@ -156,10 +106,6 @@ CREATE TABLE `sys_notice`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告 ' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for sys_user
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `account` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '账号',
@@ -178,3 +124,10 @@ CREATE TABLE `sys_user`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户管理 ' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE course_details ADD course_code varchar(255) COMMENT '课程代码';
+ALTER TABLE course_details ADD course_prise int(5) COMMENT '价格';
+ALTER TABLE course_details ADD is_top int(1) COMMENT '是否置顶';
+ALTER TABLE course_details ADD sell_time datetime COMMENT '开售时间';
+ALTER TABLE course_details ADD end_sell_time datetime COMMENT '结束售卖时间';
+ALTER TABLE course_menu ADD course_id varchar(128) COMMENT '课程id';

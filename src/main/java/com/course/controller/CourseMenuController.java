@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.course.base.Ret;
 import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
+import com.course.entity.SysUser;
 import com.course.service.ICourseMenuService;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -50,6 +52,17 @@ public class CourseMenuController {
         } else {
             return Ret.error().setMsg("课程名称不能为空");
         }
+    }
+
+    @ApiOperation(value="列表查询", notes="")
+    @GetMapping("/getMenuByList")
+    public Ret getMenuByList(CourseMenu courseMenu) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if(StringUtils.isNotEmpty(courseMenu.getCourseId())){
+            queryWrapper.eq("course_id",courseMenu.getCourseId());
+        }
+        List<SysUser> getList = iCourseMenuService.list(queryWrapper);
+        return Ret.ok().setData(getList);
     }
 
 }
