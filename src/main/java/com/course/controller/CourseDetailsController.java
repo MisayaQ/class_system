@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,8 +60,8 @@ public class CourseDetailsController {
             } else {
                 courseDetails.setId(UUIDUtil.getUUID());
                 courseDetails.setValidFlag(0);
-                courseDetails.setCreatedTime(LocalDateTime.now());
-                courseDetails.setUpdatedTime(LocalDateTime.now());
+                courseDetails.setCreatedTime(new Date());
+                courseDetails.setUpdatedTime(new Date());
                 boolean result = iCourseDetailsService.save(courseDetails);
                 if (result) {
                     return Ret.ok().setData(courseDetails);
@@ -86,7 +87,7 @@ public class CourseDetailsController {
                     return Ret.error().setMsg("课程名称已存在");
                 }
             }
-            courseDetails.setUpdatedTime(LocalDateTime.now());
+            courseDetails.setUpdatedTime(new Date());
             boolean result = iCourseDetailsService.updateById(courseDetails);
             if (result) {
                 return Ret.ok().setData(courseDetails);
