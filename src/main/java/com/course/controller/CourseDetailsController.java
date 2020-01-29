@@ -36,6 +36,12 @@ public class CourseDetailsController {
     public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) {
         QueryWrapper queryWrapper = new QueryWrapper();
         Page pageInfo = new Page(page,pageSize);
+        if(StringUtils.isNotEmpty(courseDetails.getTeacherIds())){
+            queryWrapper.like("teacher_ids",courseDetails.getTeacherIds());
+        }
+        if(StringUtils.isNotEmpty(courseDetails.getCName())){
+            queryWrapper.like("c_name",courseDetails.getCName());
+        }
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
     }

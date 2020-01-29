@@ -116,4 +116,9 @@ public class CourseDetails implements Serializable {
     @TableField("is_top")
     private Integer isTop;
 
+    @TableField("sell_time")
+    private LocalDateTime sellTime;
+
+    @TableField("end_sell_time")
+    private LocalDateTime endSellTime;
 }

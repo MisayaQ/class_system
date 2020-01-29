@@ -1,9 +1,22 @@
 package com.course.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.course.base.Ret;
+import com.course.entity.CourseDetails;
+import com.course.entity.CourseMenu;
+import com.course.service.ICourseMenuService;
+import com.course.utils.UUIDUtil;
+import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +29,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/course/course-menu")
 public class CourseMenuController {
+
+    @Autowired
+    private ICourseMenuService iCourseMenuService;
+
+    @ApiOperation(value="新增", notes="新增")
+    @PostMapping("/addCourseMenu")
+    public Ret addCourseMenu(CourseMenu courseMenu) {
+        if (StringUtils.isNotEmpty(courseMenu.getMenuName())) {
+            courseMenu.setId(UUIDUtil.getUUID());
+            courseMenu.setValidFlag(0);
+            courseMenu.setCreatedTime(LocalDateTime.now());
+            courseMenu.setUpdatedTime(LocalDateTime.now());
+            boolean result = iCourseMenuService.save(courseMenu);
+            if (result) {
+                return Ret.ok().setData(courseMenu);
+            } else {
+                return Ret.error().setMsg("新增失败");
+            }
+        } else {
+            return Ret.error().setMsg("课程名称不能为空");
+        }
+    }
 
 }
