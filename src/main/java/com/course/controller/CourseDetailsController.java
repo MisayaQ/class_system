@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
 import com.course.entity.CourseDetails;
+import com.course.entity.SysUser;
 import com.course.service.ICourseDetailsService;
+import com.course.service.ISysUserService;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +33,9 @@ public class CourseDetailsController {
     
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
+
+    @Autowired
+    private ISysUserService iSysUserService;
     
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
@@ -44,6 +49,24 @@ public class CourseDetailsController {
             queryWrapper.like("c_name",courseDetails.getCName());
         }
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
+        List<CourseDetails> detailsList = getList.getRecords();
+        if (detailsList != null && !detailsList.isEmpty()) {
+            for (CourseDetails cour : detailsList) {
+                if (StringUtils.isNotEmpty(cour.getTeacherIds())) {
+                    String teacherNames = "";
+                    String[] ids = cour.getTeacherIds().split(",");
+                    for(String id : ids){
+                        QueryWrapper query = new QueryWrapper();
+                        query.eq("ID",id);
+                        SysUser getUser = iSysUserService.getById(id);
+                        if (getUser != null) {
+                            teacherNames += getUser.getUname() + ",";
+                        }
+                    }
+                    cour.setTeacherNames(teacherNames);
+                }
+            }
+        }
         return Ret.ok().setData(getList);
     }
 

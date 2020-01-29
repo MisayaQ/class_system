@@ -130,4 +130,7 @@ public class CourseDetails implements Serializable {
     @TableField("end_sell_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endSellTime;
+
+    @TableField(exist = false)
+    private String teacherNames;
 }
