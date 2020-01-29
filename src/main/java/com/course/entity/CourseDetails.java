@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -45,13 +47,13 @@ public class CourseDetails implements Serializable {
      * 开始时间
      */
     @TableField("start_time")
-    private LocalDateTime startTime;
+    private Date startTime;
 
     /**
      * 结束时间
      */
     @TableField("end_time")
-    private LocalDateTime endTime;
+    private Date endTime;
 
     /**
      * 讲课教师
@@ -93,7 +95,7 @@ public class CourseDetails implements Serializable {
      * 创建时间
      */
     @TableField("created_time")
-    private LocalDateTime createdTime;
+    private Date createdTime;
 
     /**
      * 更新人
@@ -105,7 +107,7 @@ public class CourseDetails implements Serializable {
      * 更新时间
      */
     @TableField("updated_time")
-    private LocalDateTime updatedTime;
+    private Date updatedTime;
 
     @TableField("course_code")
     private String courseCode;
@@ -117,8 +119,8 @@ public class CourseDetails implements Serializable {
     private Integer isTop;
 
     @TableField("sell_time")
-    private LocalDateTime sellTime;
+    private Date sellTime;
 
     @TableField("end_sell_time")
-    private LocalDateTime endSellTime;
+    private Date endSellTime;
 }
