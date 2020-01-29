@@ -161,4 +161,30 @@ public class SysUserController {
         return Ret.ok().setData(getMap);
     }
 
+    @ApiOperation(value="登录", notes="")
+    @GetMapping("/login")
+    public Ret login(String account,String password) {
+        if(StringUtils.isEmpty(account)){
+            return Ret.error().setMsg("用户名不能为空");
+        } else if (StringUtils.isEmpty(password)) {
+            return Ret.error().setMsg("密码不能为空");
+        }
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("account",account);
+        List<SysUser> getInfo = iSysUserService.list(queryWrapper);
+        if (getInfo != null && !getInfo.isEmpty()) {
+            if (password.equals(getInfo.get(0).getPassword())) {
+                if (getInfo.get(0).getValidFlag() == 1) {
+                    return Ret.error().setMsg("账号已被禁用");
+                } else {
+                    return Ret.ok().setData(getInfo.get(0));
+                }
+            } else {
+                return Ret.error().setMsg("密码错误");
+            }
+        } else {
+            return Ret.error().setMsg("账号不存在");
+        }
+    }
+
 }
