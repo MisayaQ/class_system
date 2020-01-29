@@ -11,6 +11,7 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -47,12 +48,14 @@ public class CourseDetails implements Serializable {
      * 开始时间
      */
     @TableField("start_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
     /**
      * 结束时间
      */
     @TableField("end_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     /**
@@ -95,6 +98,7 @@ public class CourseDetails implements Serializable {
      * 创建时间
      */
     @TableField("created_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdTime;
 
     /**
@@ -107,6 +111,7 @@ public class CourseDetails implements Serializable {
      * 更新时间
      */
     @TableField("updated_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedTime;
 
     @TableField("course_code")
@@ -119,8 +124,10 @@ public class CourseDetails implements Serializable {
     private Integer isTop;
 
     @TableField("sell_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sellTime;
 
     @TableField("end_sell_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endSellTime;
 }

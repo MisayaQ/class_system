@@ -49,11 +49,11 @@ public class CourseDetailsController {
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseDetails")
-    public Ret addCourseDetails(CourseDetails courseDetails) {
+    public Ret addCourseDetails(@RequestBody CourseDetails courseDetails) {
         if (StringUtils.isNotEmpty(courseDetails.getCName())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("account",courseDetails.getCName());
+            queryWrapper.eq("c_name",courseDetails.getCName());
             List<CourseDetails> getList = iCourseDetailsService.list(queryWrapper);
             if (getList != null && !getList.isEmpty()) {
                 return Ret.error().setMsg("课程名称已存在");
@@ -80,7 +80,7 @@ public class CourseDetailsController {
         if (StringUtils.isNotEmpty(courseDetails.getCName())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("account",courseDetails.getCName());
+            queryWrapper.eq("c_name",courseDetails.getCName());
             List<CourseDetails> getList = iCourseDetailsService.list(queryWrapper);
             if (getList != null && !getList.isEmpty()) {
                 if (getList.size() > 1 || (getList.size() == 1 && !courseDetails.getId().equals(getList.get(0).getId()))) {
