@@ -107,5 +107,13 @@ public class CourseDetails implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("course_code")
+    private String courseCode;
+
+    @TableField("course_prise")
+    private Integer coursePrise;
+
+    @TableField("is_top")
+    private Integer isTop;
 
 }

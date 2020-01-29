@@ -33,7 +33,7 @@ public class CourseDetailsController {
     
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
-    public Ret getCourseDetailsByPage(Integer page, Integer pageSize) {
+    public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) {
         QueryWrapper queryWrapper = new QueryWrapper();
         Page pageInfo = new Page(page,pageSize);
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
