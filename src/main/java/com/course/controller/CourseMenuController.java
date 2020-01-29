@@ -13,11 +13,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,5 +67,40 @@ public class CourseMenuController {
         List<SysUser> getList = iCourseMenuService.list(queryWrapper);
         return Ret.ok().setData(getList);
     }
+
+    @ApiOperation(value="修改", notes="")
+    @PutMapping("/updateCourseMenu")
+    public Ret updateCourseMenu(@RequestBody CourseMenu courseMenu) {
+        if (StringUtils.isNotEmpty(courseMenu.getMenuName())) {
+            courseMenu.setUpdatedTime(LocalDateTime.now());
+            boolean result = iCourseMenuService.updateById(courseMenu);
+            if (result) {
+                return Ret.ok().setData(courseMenu);
+            } else {
+                return Ret.error().setMsg("修改失败");
+            }
+
+        } else {
+            return Ret.error().setMsg("课程名称不能为空");
+        }
+    }
+
+    @ApiOperation(value = "批量删除", notes="")
+    @PostMapping("/batchDelete")
+    public Ret batchDelete(String ids) {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(ids)) {
+            String[] idArr = ids.split(",");
+            List<String> idList = Arrays.asList(idArr);
+            boolean result = iCourseMenuService.removeByIds(idList);
+            if (result) {
+                return Ret.ok().setMsg("删除成功");
+            } else {
+                return Ret.error().setMsg("删除失败");
+            }
+        } else {
+            return Ret.error().setMsg("请选择要删除的数据");
+        }
+    }
+
 
 }

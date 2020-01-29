@@ -75,7 +75,7 @@ public class CourseDetailsController {
 
     @ApiOperation(value="修改", notes="")
     @PutMapping("/updateCourseDetails")
-    public Ret updateCourseDetails(CourseDetails courseDetails) {
+    public Ret updateCourseDetails(@RequestBody CourseDetails courseDetails) {
         if (StringUtils.isNotEmpty(courseDetails.getCName())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
