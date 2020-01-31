@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -85,5 +88,19 @@ public class CourseMenu implements Serializable {
 
     @TableField("course_id")
     private String courseId;
+
+    @TableField("start_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startTime;
+
+    @TableField("end_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endTime;
+
+    @TableField("teacher_id")
+    private String teacherId;
+
+    @TableField("menu_descrip")
+    private String menuDescrip;
 
 }

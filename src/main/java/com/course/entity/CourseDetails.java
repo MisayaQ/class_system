@@ -133,4 +133,7 @@ public class CourseDetails implements Serializable {
 
     @TableField(exist = false)
     private String teacherNames;
+
+    @TableField("tips")
+    private String tips;
 }

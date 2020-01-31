@@ -101,5 +101,10 @@ public class SysUser implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("main_course")
+    private String mainCourse;
+
+    @TableField("resume")
+    private String resume;
 
 }

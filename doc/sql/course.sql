@@ -131,3 +131,20 @@ ALTER TABLE course_details ADD is_top int(1) COMMENT '是否置顶';
 ALTER TABLE course_details ADD sell_time datetime COMMENT '开售时间';
 ALTER TABLE course_details ADD end_sell_time datetime COMMENT '结束售卖时间';
 ALTER TABLE course_menu ADD course_id varchar(128) COMMENT '课程id';
+ALTER TABLE course_details ADD tips vachar(255) COMMENT '听课须知';
+ALTER TABLE course_menu ADD start_time datetime COMMENT '开始时间';
+ALTER TABLE course_menu ADD end_time datetime COMMENT '结束时间';
+ALTER TABLE course_menu ADD teacher_id vachar(50) COMMENT '任课老师';
+ALTER TABLE course_menu ADD menu_descrip vachar(255) COMMENT '课程介绍';
+ALTER TABLE sys_user ADD main_course vachar(255) COMMENT '主讲课程';
+ALTER TABLE sys_user ADD resume vachar(255) COMMENT '讲课简历';
+
+CREATE TABLE `sys_count`  (
+  `ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `count_date` datetime NULL DEFAULT NULL,
+  `counts` int(10) NULL DEFAULT NULL,
+  `valid_flag` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
