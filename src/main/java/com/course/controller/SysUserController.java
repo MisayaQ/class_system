@@ -152,7 +152,7 @@ public class SysUserController {
     @ApiOperation(value="查询下拉列表", notes="")
     @GetMapping("/getUserBySelect")
     public Ret getUserBySelect(SysUser sysUser) {
-        Map<String,String> getMap = new HashMap<>(50);
+//        Map<String,String> getMap = new HashMap<>(50);
         QueryWrapper queryWrapper = new QueryWrapper();
         if(StringUtils.isNotEmpty(sysUser.getUserRole())){
             queryWrapper.eq("user_role",sysUser.getUserRole());
@@ -160,12 +160,12 @@ public class SysUserController {
             return Ret.error().setMsg("输入查询人员类型，userRole字段，1为学生2为教师");
         }
         List<SysUser> getList = iSysUserService.list(queryWrapper);
-        if(getList!=null && !getList.isEmpty()){
+        /*if(getList!=null && !getList.isEmpty()){
             for(SysUser sys : getList){
                 getMap.put(sys.getId(),sys.getUname());
             }
-        }
-        return Ret.ok().setData(getMap);
+        }*/
+        return Ret.ok().setData(getList);
     }
 
     @ApiOperation(value="登录", notes="")
