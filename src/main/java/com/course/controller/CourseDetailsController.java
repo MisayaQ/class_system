@@ -48,6 +48,12 @@ public class CourseDetailsController {
         if(StringUtils.isNotEmpty(courseDetails.getCName())){
             queryWrapper.like("c_name",courseDetails.getCName());
         }
+        if(StringUtils.isNotEmpty(courseDetails.getCourseCode())){
+            queryWrapper.like("course_code",courseDetails.getCourseCode());
+        }
+        if(courseDetails.getIsTop() != null){
+            queryWrapper.eq("is_top",courseDetails.getIsTop());
+        }
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
         List<CourseDetails> detailsList = getList.getRecords();
         if (detailsList != null && !detailsList.isEmpty()) {
