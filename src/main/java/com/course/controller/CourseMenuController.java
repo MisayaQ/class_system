@@ -40,7 +40,7 @@ public class CourseMenuController {
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
-    public Ret addCourseMenu(CourseMenu courseMenu) {
+    public Ret addCourseMenu(@RequestBody CourseMenu courseMenu) {
         if (StringUtils.isNotEmpty(courseMenu.getMenuName())) {
             courseMenu.setId(UUIDUtil.getUUID());
             courseMenu.setValidFlag(0);
