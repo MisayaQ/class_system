@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.mapper.SysCountMapper">
+    <select id="countAllDatas" resultType="java.lang.Integer" parameterType="com.course.entity.SysCount">
+        select sum(counts) from sys_count
+        where count_date &gt; #{time1}
+        and count_date &lt; #{time2}
+    </select>
 
+    <select id="countDataByDay" resultType="com.course.common.CountResult" parameterType="com.course.entity.SysCount">
+        select MONTH(count_date) as month, DAY(count_date) as day,sum(counts) as counts
+        from sys_count
+        where count_date &gt; #{time1}
+        and count_date &lt; #{time2}
+        GROUP BY MONTH(count_date), DAY(count_date)
+    </select>
+
+    <select id="countDataByMonth" resultType="com.course.common.CountResult" parameterType="com.course.entity.SysCount">
+        select MONTH(count_date) as month,sum(counts) as counts
+        from sys_count
+        where count_date &gt; #{time1}
+        and count_date &lt; #{time2}
+        GROUP BY MONTH(count_date)
+    </select>
 </mapper>

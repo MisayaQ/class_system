@@ -42,5 +42,10 @@ public class SysCount implements Serializable {
     @TableField("valid_flag")
     private String validFlag;
 
+    @TableField(exist = false)
+    private String time1;
+
+    @TableField(exist = false)
+    private String time2;
 
 }
