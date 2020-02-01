@@ -79,4 +79,10 @@ public class CoursePurchase implements Serializable {
 
     @TableField(exist = false)
     private String courseName;
+
+    @TableField(exist = false)
+    private String time1;
+
+    @TableField(exist = false)
+    private String time2;
 }

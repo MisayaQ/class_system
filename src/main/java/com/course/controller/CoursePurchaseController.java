@@ -4,6 +4,7 @@ package com.course.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
+import com.course.common.CountResult;
 import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
 import com.course.entity.CoursePurchase;
@@ -22,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -110,6 +115,43 @@ public class CoursePurchaseController {
         } else {
             return Ret.error().setMsg("请选择要删除的数据");
         }
+    }
+
+    @ApiOperation(value="统计", notes="")
+    @GetMapping("/getPurchaseByCount")
+    public Ret getPurchaseByCount(String countType) throws Exception{
+        QueryWrapper queryWrapper = new QueryWrapper();
+        Date stDate = new Date();
+        Date enDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String endStr = sdf.format(enDate);
+        Calendar cal = Calendar.getInstance();
+        List<CountResult> getList = new ArrayList<>();
+        CoursePurchase coursePurchase = new CoursePurchase();
+        if ("day".equals(countType)) {
+            cal.add(Calendar.DATE,-7);
+            stDate = cal.getTime();
+            String startStr = sdf.format(stDate);
+            coursePurchase.setTime1(startStr);
+            coursePurchase.setTime2(endStr);
+            getList = iCoursePurchaseService.countPurchaseDataByDay(coursePurchase);
+        }else if ("month".equals(countType)) {
+            int month = cal.get(Calendar.MONTH) + 1;
+            int year = cal.get(Calendar.YEAR);
+            String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
+            coursePurchase.setTime1(date);
+            coursePurchase.setTime2(endStr);
+            getList = iCoursePurchaseService.countPurchaseDataByDay(coursePurchase);
+        } else if ("year".equals(countType)) {
+            int year = cal.get(Calendar.YEAR);
+            String date = String.valueOf(year) + "-01-01 00:00:00";
+            coursePurchase.setTime1(date);
+            coursePurchase.setTime2(endStr);
+            getList = iCoursePurchaseService.countPurchaseDataByMonth(coursePurchase);
+        } else {
+            return Ret.error().setMsg("只能为day,month,year类型");
+        }
+        return Ret.ok().setData(getList);
     }
 
 }

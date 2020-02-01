@@ -1,7 +1,11 @@
 package com.course.mapper;
 
+import com.course.common.CountResult;
 import com.course.entity.CoursePurchase;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +15,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author test
  * @since 2019-12-25
  */
+@Repository
 public interface CoursePurchaseMapper extends BaseMapper<CoursePurchase> {
 
+    List<CountResult> countPurchaseDataByDay(CoursePurchase coursePurchase);
+
+    List<CountResult> countPurchaseDataByMonth(CoursePurchase coursePurchase);
 }
