@@ -138,6 +138,8 @@ ALTER TABLE course_menu ADD teacher_id varchar(50) COMMENT '任课老师';
 ALTER TABLE course_menu ADD menu_descrip varchar(255) COMMENT '课程介绍';
 ALTER TABLE sys_user ADD main_course varchar(255) COMMENT '主讲课程';
 ALTER TABLE sys_user ADD resume varchar(255) COMMENT '讲课简历';
+ALTER TABLE course_purchase ADD pur_address varchar(255) COMMENT '订单地址';
+ALTER TABLE course_purchase ADD state varchar(255) COMMENT '购买结果状态1待付款2已付款3已发货4交易失败';
 
 CREATE TABLE `sys_count`  (
   `ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,

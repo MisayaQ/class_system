@@ -71,5 +71,9 @@ public class CoursePurchase implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("pur_address")
+    private String purAddress;
 
+    @TableField("state")
+    private String state;
 }

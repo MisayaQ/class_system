@@ -64,7 +64,7 @@ public class CourseMenuController {
         if(StringUtils.isNotEmpty(courseMenu.getCourseId())){
             queryWrapper.eq("course_id",courseMenu.getCourseId());
         }
-        List<SysUser> getList = iCourseMenuService.list(queryWrapper);
+        List<CourseMenu> getList = iCourseMenuService.list(queryWrapper);
         return Ret.ok().setData(getList);
     }
 
