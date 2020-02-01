@@ -76,4 +76,7 @@ public class CoursePurchase implements Serializable {
 
     @TableField("state")
     private String state;
+
+    @TableField(exist = false)
+    private String courseName;
 }

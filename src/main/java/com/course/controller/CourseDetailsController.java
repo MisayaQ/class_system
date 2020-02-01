@@ -54,6 +54,7 @@ public class CourseDetailsController {
         if(courseDetails.getIsTop() != null){
             queryWrapper.eq("is_top",courseDetails.getIsTop());
         }
+        queryWrapper.orderByDesc("updated_time");
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
         List<CourseDetails> detailsList = getList.getRecords();
         if (detailsList != null && !detailsList.isEmpty()) {

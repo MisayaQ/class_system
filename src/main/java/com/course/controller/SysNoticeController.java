@@ -36,6 +36,7 @@ public class SysNoticeController {
     public Ret getNoticeByPage(Integer page, Integer pageSize) {
         QueryWrapper queryWrapper = new QueryWrapper();
         Page pageInfo = new Page(page,pageSize);
+        queryWrapper.orderByDesc("updated_time");
         Page<SysNotice> getList = iSysNoticeService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
     }

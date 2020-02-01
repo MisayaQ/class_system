@@ -64,6 +64,7 @@ public class CourseMenuController {
         if(StringUtils.isNotEmpty(courseMenu.getCourseId())){
             queryWrapper.eq("course_id",courseMenu.getCourseId());
         }
+        queryWrapper.orderByDesc("updated_time");
         List<CourseMenu> getList = iCourseMenuService.list(queryWrapper);
         return Ret.ok().setData(getList);
     }

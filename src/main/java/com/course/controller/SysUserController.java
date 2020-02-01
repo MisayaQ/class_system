@@ -58,6 +58,7 @@ public class SysUserController {
         if(sysUser.getValidFlag() != null){
             queryWrapper.eq("valid_flag",sysUser.getValidFlag());
         }
+        queryWrapper.orderByDesc("updated_time");
         Page pageInfo = new Page(page,pageSize);
         Page<SysUser> getList = iSysUserService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
