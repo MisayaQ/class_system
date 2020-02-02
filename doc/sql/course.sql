@@ -7,9 +7,9 @@ CREATE TABLE `course_answer`  (
   `answer_content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '回答内容',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程回答表 ' ROW_FORMAT = Dynamic;
 
@@ -17,17 +17,17 @@ CREATE TABLE `course_details`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
   `c_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程名称',
   `c_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程类别',
-  `start_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
   `teacher_ids` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '讲课教师',
   `count_class` int(5) NULL DEFAULT NULL COMMENT '课时数',
   `c_descript` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程简介',
   `remarks` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程详情表 ' ROW_FORMAT = Dynamic;
 
@@ -42,9 +42,9 @@ CREATE TABLE `course_file`  (
   `file_content` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务内容',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程附件表 ' ROW_FORMAT = Dynamic;
 
@@ -56,18 +56,11 @@ CREATE TABLE `course_menu`  (
   `remark` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程目录 ' ROW_FORMAT = Dynamic;
-
-CREATE TABLE `course_menu_details`  (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
-  `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '目录ID',
-  `details_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程ID',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程目录-详情关联表 ' ROW_FORMAT = Dynamic;
 
 CREATE TABLE `course_purchase`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ID',
@@ -75,9 +68,9 @@ CREATE TABLE `course_purchase`  (
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '购买人id',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程购买记录表 ' ROW_FORMAT = Dynamic;
 
@@ -88,9 +81,9 @@ CREATE TABLE `course_question`  (
   `question_content` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '问题内容',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程问题表 ' ROW_FORMAT = Dynamic;
 
@@ -100,9 +93,9 @@ CREATE TABLE `sys_notice`  (
   `content` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '内容',
   `valid_flag` int(1) NULL DEFAULT 0 COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告 ' ROW_FORMAT = Dynamic;
 
@@ -117,9 +110,9 @@ CREATE TABLE `sys_user`  (
   `user_role` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '用户角色 1学生，2教师，3超级管理员',
   `valid_flag` int(11) NULL DEFAULT NULL COMMENT '删除标识',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户管理 ' ROW_FORMAT = Dynamic;
 
@@ -146,6 +139,18 @@ CREATE TABLE `sys_count`  (
   `count_date` datetime NULL DEFAULT NULL,
   `counts` int(10) NULL DEFAULT NULL,
   `valid_flag` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE `sys_user_address`  (
+  `ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `address` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `is_top` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
