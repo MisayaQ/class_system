@@ -3,7 +3,7 @@
 <mapper namespace="com.course.mapper.CoursePurchaseMapper">
 
     <select id="countPurchaseDataByDay" resultType="com.course.common.CountResult" parameterType="com.course.entity.CoursePurchase">
-        select MONTH(created_time) as month, DAY(created_time) as day,count(1) as counts
+        select date_format(created_time,'%Y-%m-%d') as countDate,count(1) as counts
         from course_purchase
         where created_time &gt; #{time1}
         and created_time &lt; #{time2}
@@ -11,7 +11,7 @@
     </select>
 
     <select id="countPurchaseDataByMonth" resultType="com.course.common.CountResult" parameterType="com.course.entity.CoursePurchase">
-        select MONTH(created_time) as month,count(1) as counts
+        select date_format(created_time,'%Y-%m') as countDate,count(1) as counts
         from course_purchase
         where created_time &gt; #{time1}
         and created_time &lt; #{time2}

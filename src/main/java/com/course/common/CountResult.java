@@ -9,9 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CountResult {
 
-    private String month;
+    private String countDate;
 
-    private String day;
+//    private String day;
 
     private int counts;
 }

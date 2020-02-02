@@ -8,7 +8,7 @@
     </select>
 
     <select id="countDataByDay" resultType="com.course.common.CountResult" parameterType="com.course.entity.SysCount">
-        select MONTH(count_date) as month, DAY(count_date) as day,sum(counts) as counts
+        select date_format(count_date,'%Y-%m-%d') as countDate,sum(counts) as counts
         from sys_count
         where count_date &gt; #{time1}
         and count_date &lt; #{time2}
@@ -16,7 +16,7 @@
     </select>
 
     <select id="countDataByMonth" resultType="com.course.common.CountResult" parameterType="com.course.entity.SysCount">
-        select MONTH(count_date) as month,sum(counts) as counts
+        select date_format(count_date,'%Y-%m') as countDate,sum(counts) as counts
         from sys_count
         where count_date &gt; #{time1}
         and count_date &lt; #{time2}
