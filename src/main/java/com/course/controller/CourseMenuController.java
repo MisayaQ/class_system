@@ -7,6 +7,7 @@ import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
 import com.course.entity.SysUser;
 import com.course.service.ICourseMenuService;
+import com.course.service.ISysUserService;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,9 @@ public class CourseMenuController {
     @Autowired
     private ICourseMenuService iCourseMenuService;
 
+    @Autowired
+    private ISysUserService iSysUserService;
+
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
     public Ret addCourseMenu(@RequestBody CourseMenu courseMenu) {
@@ -66,6 +70,18 @@ public class CourseMenuController {
         }
         queryWrapper.orderByDesc("updated_time");
         List<CourseMenu> getList = iCourseMenuService.list(queryWrapper);
+        if (getList != null && !getList.isEmpty()) {
+            for (CourseMenu cour : getList) {
+                if (StringUtils.isNotEmpty(cour.getTeacherId())) {
+                    QueryWrapper query = new QueryWrapper();
+                    query.eq("ID",cour.getTeacherId());
+                    SysUser getUser = iSysUserService.getById(cour.getTeacherId());
+                    if (getUser != null) {
+                        cour.setTeacherName(getUser.getUname());
+                    }
+                }
+            }
+        }
         return Ret.ok().setData(getList);
     }
 

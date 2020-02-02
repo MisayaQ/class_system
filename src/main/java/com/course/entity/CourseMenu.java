@@ -106,4 +106,7 @@ public class CourseMenu implements Serializable {
     @TableField("menu_descrip")
     private String menuDescrip;
 
+    @TableField(exist = false)
+    private String teacherName;
+
 }
