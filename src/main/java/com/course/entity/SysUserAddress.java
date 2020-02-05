@@ -45,5 +45,9 @@ public class SysUserAddress implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("receiver")
+    private String receiver;
 
+    @TableField("tele_number")
+    private String teleNumber;
 }

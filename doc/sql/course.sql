@@ -118,22 +118,6 @@ CREATE TABLE `sys_user`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-ALTER TABLE course_details ADD course_code varchar(255) COMMENT '课程代码';
-ALTER TABLE course_details ADD course_prise int(5) COMMENT '价格';
-ALTER TABLE course_details ADD is_top int(1) COMMENT '是否置顶';
-ALTER TABLE course_details ADD sell_time datetime COMMENT '开售时间';
-ALTER TABLE course_details ADD end_sell_time datetime COMMENT '结束售卖时间';
-ALTER TABLE course_menu ADD course_id varchar(128) COMMENT '课程id';
-ALTER TABLE course_details ADD tips varchar(255) COMMENT '听课须知';
-ALTER TABLE course_menu ADD start_time datetime COMMENT '开始时间';
-ALTER TABLE course_menu ADD end_time datetime COMMENT '结束时间';
-ALTER TABLE course_menu ADD teacher_id varchar(50) COMMENT '任课老师';
-ALTER TABLE course_menu ADD menu_descrip varchar(255) COMMENT '课程介绍';
-ALTER TABLE sys_user ADD main_course varchar(255) COMMENT '主讲课程';
-ALTER TABLE sys_user ADD resume varchar(255) COMMENT '讲课简历';
-ALTER TABLE course_purchase ADD pur_address varchar(255) COMMENT '订单地址';
-ALTER TABLE course_purchase ADD state varchar(255) COMMENT '购买结果状态1待付款2已付款3已发货4交易失败';
-
 CREATE TABLE `sys_count`  (
   `ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `count_date` datetime NULL DEFAULT NULL,
@@ -155,3 +139,22 @@ CREATE TABLE `sys_user_address`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE course_details ADD course_code varchar(255) COMMENT '课程代码';
+ALTER TABLE course_details ADD course_prise int(5) COMMENT '价格';
+ALTER TABLE course_details ADD is_top int(1) COMMENT '是否置顶';
+ALTER TABLE course_details ADD sell_time datetime COMMENT '开售时间';
+ALTER TABLE course_details ADD end_sell_time datetime COMMENT '结束售卖时间';
+ALTER TABLE course_menu ADD course_id varchar(128) COMMENT '课程id';
+ALTER TABLE course_details ADD tips varchar(255) COMMENT '听课须知';
+ALTER TABLE course_menu ADD start_time datetime COMMENT '开始时间';
+ALTER TABLE course_menu ADD end_time datetime COMMENT '结束时间';
+ALTER TABLE course_menu ADD teacher_id varchar(50) COMMENT '任课老师';
+ALTER TABLE course_menu ADD menu_descrip varchar(255) COMMENT '课程介绍';
+ALTER TABLE sys_user ADD main_course varchar(255) COMMENT '主讲课程';
+ALTER TABLE sys_user ADD resume varchar(255) COMMENT '讲课简历';
+ALTER TABLE course_purchase ADD pur_address varchar(255) COMMENT '订单地址';
+ALTER TABLE course_purchase ADD state varchar(255) COMMENT '购买结果状态1待付款2已付款3已发货4交易失败';
+ALTER TABLE sys_user_address ADD receiver varchar(255) COMMENT '收货人';
+ALTER TABLE sys_user_address ADD tele_number varchar(255) COMMENT '联系电话';
+
