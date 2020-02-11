@@ -146,12 +146,25 @@ public class CourseDetailsController {
         }
     }
 
-    @ApiOperation(value="根据id查询个人信息", notes="")
+    @ApiOperation(value="根据id查询", notes="")
     @GetMapping("/getCourseDetailsById")
     public Ret getCourseDetailsById(String id) {
         //QueryWrapper queryWrapper = new QueryWrapper();
 //        queryWrapper.eq("ID",id);
         CourseDetails getInfo = iCourseDetailsService.getById(id);
+        if (StringUtils.isNotEmpty(getInfo.getTeacherIds())) {
+            String teacherNames = "";
+            String[] ids = getInfo.getTeacherIds().split(",");
+            for(String tid : ids){
+                QueryWrapper query = new QueryWrapper();
+                query.eq("ID",tid);
+                SysUser getUser = iSysUserService.getById(tid);
+                if (getUser != null) {
+                    teacherNames += getUser.getUname() + ",";
+                }
+            }
+            getInfo.setTeacherNames(teacherNames);
+        }
         return Ret.ok().setData(getInfo);
     }
 
