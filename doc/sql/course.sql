@@ -157,4 +157,6 @@ ALTER TABLE course_purchase ADD pur_address varchar(255) COMMENT '订单地址';
 ALTER TABLE course_purchase ADD state varchar(255) COMMENT '购买结果状态1待付款2已付款3已发货4交易失败';
 ALTER TABLE sys_user_address ADD receiver varchar(255) COMMENT '收货人';
 ALTER TABLE sys_user_address ADD tele_number varchar(255) COMMENT '联系电话';
+ALTER TABLE course_purchase ADD pur_user varchar(255) COMMENT '收货姓名';
+ALTER TABLE course_purchase ADD pur_tel varchar(255) COMMENT '收货电话号';
 
