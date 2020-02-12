@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.course.base.Ret;
 import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
+import com.course.entity.CoursePurchase;
 import com.course.entity.SysUser;
 import com.course.service.ICourseMenuService;
+import com.course.service.ICoursePurchaseService;
 import com.course.service.ISysUserService;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -41,6 +45,9 @@ public class CourseMenuController {
 
     @Autowired
     private ISysUserService iSysUserService;
+
+    @Autowired
+    private ICoursePurchaseService iCoursePurchaseService;
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
@@ -117,6 +124,46 @@ public class CourseMenuController {
         } else {
             return Ret.error().setMsg("请选择要删除的数据");
         }
+    }
+
+    @ApiOperation(value="今日课程", notes="")
+    @GetMapping("/getMenuByToday")
+    public Ret getMenuByToday(String userId) {
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        int day = cal.get(Calendar.DATE);
+        String stDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" +String.valueOf(day) + " 00:00:00";
+        String edDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" +String.valueOf(day) + " 23:59:59";
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.gt("start_time",stDate);
+        queryWrapper.lt("start_time",edDate);
+        queryWrapper.orderByDesc("updated_time");
+        List<CourseMenu> getAllList = iCourseMenuService.list(queryWrapper);
+        QueryWrapper wapper1 = new QueryWrapper();
+        wapper1.eq("user_id",userId);
+        List<CoursePurchase> purList = iCoursePurchaseService.list(wapper1);
+        List<CourseMenu> menuList = new ArrayList<>();
+        if (getAllList != null && !getAllList.isEmpty() && purList != null && !purList.isEmpty()) {
+            List<String> getPurId = new ArrayList<>();
+            for(CoursePurchase coursePurchase : purList){
+                getPurId.add(coursePurchase.getDetailsId());
+            }
+            for (CourseMenu cour : getAllList) {
+                if(getPurId.contains(cour.getCourseId())){
+                    if (StringUtils.isNotEmpty(cour.getTeacherId())) {
+                        QueryWrapper query = new QueryWrapper();
+                        query.eq("ID",cour.getTeacherId());
+                        SysUser getUser = iSysUserService.getById(cour.getTeacherId());
+                        if (getUser != null) {
+                            cour.setTeacherName(getUser.getUname());
+                        }
+                    }
+                    menuList.add(cour);
+                }
+            }
+        }
+        return Ret.ok().setData(menuList);
     }
 
 
