@@ -101,5 +101,8 @@ public class CourseFile implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+    @TableField("menu_id")
+    private String menuId;
+
 
 }

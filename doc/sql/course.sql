@@ -140,6 +140,20 @@ CREATE TABLE `sys_user_address`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+CREATE TABLE `sys_school`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID',
+  `school_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '学校名称',
+  `school_property` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '院校属性',
+  `school_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '院校类型',
+  `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所在城市',
+  `remarks` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '多余字段',
+  `created_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 ALTER TABLE course_details ADD course_code varchar(255) COMMENT '课程代码';
 ALTER TABLE course_details ADD course_prise int(5) COMMENT '价格';
 ALTER TABLE course_details ADD is_top int(1) COMMENT '是否置顶';
@@ -159,4 +173,5 @@ ALTER TABLE sys_user_address ADD receiver varchar(255) COMMENT '收货人';
 ALTER TABLE sys_user_address ADD tele_number varchar(255) COMMENT '联系电话';
 ALTER TABLE course_purchase ADD pur_user varchar(255) COMMENT '收货姓名';
 ALTER TABLE course_purchase ADD pur_tel varchar(255) COMMENT '收货电话号';
-
+ALTER TABLE course_menu ADD menu_state varchar(10) COMMENT '课程状态';
+ALTER TABLE course_file ADD menu_id varchar(50) COMMENT '目录ID';
