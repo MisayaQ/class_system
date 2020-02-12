@@ -92,4 +92,9 @@ public class CoursePurchase implements Serializable {
     @TableField("pur_tel")
     private String purTel;
 
+    @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer pagesize;
 }

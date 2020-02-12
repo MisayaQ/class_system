@@ -19,4 +19,6 @@ public interface ICoursePurchaseService extends IService<CoursePurchase> {
     List<CountResult> countPurchaseDataByDay(CoursePurchase coursePurchase);
 
     List<CountResult> countPurchaseDataByMonth(CoursePurchase coursePurchase);
+
+    List<CoursePurchase> queryPurByPage(CoursePurchase coursePurchase);
 }

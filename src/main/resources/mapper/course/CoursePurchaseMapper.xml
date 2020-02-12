@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.mapper.CoursePurchaseMapper">
+    <resultMap id="BaseResultMap" type="com.course.entity.CoursePurchase">
+        <id column="id" property="id" />
+        <result column="details_id" property="detailsId" />
+        <result column="user_id" property="userId" />
+        <result column="valid_flag" property="validFlag" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="pur_address" property="purAddress" />
+        <result column="state" property="state" />
+        <result column="pur_user" property="purUser" />
+        <result column="pur_tel" property="purTel" />
+    </resultMap>
 
     <select id="countPurchaseDataByDay" resultType="com.course.common.CountResult" parameterType="com.course.entity.CoursePurchase">
         select date_format(created_time,'%Y-%m-%d') as countDate,count(1) as counts
@@ -16,6 +28,23 @@
         where created_time &gt; #{time1}
         and created_time &lt; #{time2}
         GROUP BY MONTH(created_time)
+    </select>
+
+    <select id="queryPurByPage" resultMap="BaseResultMap" parameterType="com.course.entity.CoursePurchase">
+        SELECT
+	    course_purchase.*
+        FROM
+	    course_purchase
+	    left join course_details on course_purchase.details_id=course_details.id
+	    where 1=1
+	    <if test="courseName != null">
+	      and course_details.c_name like #{courseName}
+        </if>
+        <if test="userId != null">
+            and course_purchase.user_id = #{userId}
+        </if>
+        order by updated_time desc,id
+        limit #{page},#{pagesize}
     </select>
 
 </mapper>

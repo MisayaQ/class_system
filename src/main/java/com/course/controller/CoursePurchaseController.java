@@ -14,6 +14,7 @@ import com.course.utils.StringUtil;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,15 +54,20 @@ public class CoursePurchaseController {
     @GetMapping("/getPurchaseByPage")
     public Ret getPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        Page pageInfo = new Page(page,pageSize);
+        CoursePurchase purchasequery = new CoursePurchase();
+        purchasequery.setPage((page-1)*pageSize);
+        purchasequery.setPagesize(pageSize);
         if(StringUtils.isNotEmpty(coursePurchase.getUserId())){
-            queryWrapper.like("user_id",coursePurchase.getUserId());
+            purchasequery.setUserId(coursePurchase.getUserId());
+        }
+        if(StringUtils.isNotEmpty(coursePurchase.getCourseName())){
+            purchasequery.setCourseName("%"+coursePurchase.getCourseName()+"%");
         }
         queryWrapper.orderByDesc("updated_time");
-        Page<CoursePurchase> getList = iCoursePurchaseService.page(pageInfo,queryWrapper);
-        List<CoursePurchase> purList = getList.getRecords();
-        if(purList != null && !purList.isEmpty()){
-            for (CoursePurchase purchase : purList) {
+        List<CoursePurchase> getList = iCoursePurchaseService.queryPurByPage(purchasequery);
+//        List<CoursePurchase> purList = getList.getRecords();
+        if(getList != null && !getList.isEmpty()){
+            for (CoursePurchase purchase : getList) {
                 if (StringUtils.isNotEmpty(purchase.getDetailsId())) {
                     CourseDetails courseDetails = iCourseDetailsService.getById(purchase.getDetailsId());
                     if(courseDetails != null){

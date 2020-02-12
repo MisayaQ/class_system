@@ -34,4 +34,9 @@ public class CoursePurchaseServiceImpl extends ServiceImpl<CoursePurchaseMapper,
     public List<CountResult> countPurchaseDataByMonth(CoursePurchase coursePurchase) {
         return coursePurchaseMapper.countPurchaseDataByMonth(coursePurchase);
     }
+
+    @Override
+    public List<CoursePurchase> queryPurByPage(CoursePurchase coursePurchase) {
+        return coursePurchaseMapper.queryPurByPage(coursePurchase);
+    }
 }
