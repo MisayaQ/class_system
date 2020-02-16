@@ -56,9 +56,9 @@ public class CourseFileController {
     @Value("${file.path}")
     private String fileOriPath;
 
-    @ApiOperation(value="上传", notes="")
+    @ApiOperation(value="上传学习视频", notes="")
     @PostMapping(value = "/fileUpload")
-    public Ret fileUpload(@RequestParam(value = "file") MultipartFile file, String courseId, HttpServletRequest request) throws IOException {
+    public Ret fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestBody CourseFile courseFile, HttpServletRequest request) throws IOException {
         if (file.isEmpty()) {
             System.out.println("文件为空");
         }
@@ -72,8 +72,6 @@ public class CourseFileController {
         }
         try {
             file.transferTo(dest);
-            CourseFile courseFile = new CourseFile();
-            courseFile.setDetailsId(courseId);
             courseFile.setFileName(fileName);
             courseFile.setFilePath(filePath);
             insertFileInfo(courseFile);
@@ -85,7 +83,6 @@ public class CourseFileController {
 
     public void insertFileInfo (CourseFile courseFile) {
         courseFile.setId(UUIDUtil.getUUID());
-        courseFile.setFileType("1");
         courseFile.setCreatedTime(LocalDateTime.now());
         courseFile.setUpdatedTime(LocalDateTime.now());
         courseFile.setShowFlag("1");
@@ -176,6 +173,51 @@ public class CourseFileController {
         } else {
             return Ret.error().setMsg("请选择要删除的数据");
         }
+    }
+
+    @ApiOperation(value="新增任务", notes="新增任务")
+    @PostMapping("/addCourseTask")
+    public Ret addCourseTask(@RequestBody CourseFile courseFile) {
+        if (StringUtils.isNotEmpty(courseFile.getFileContent())) {
+            courseFile.setId(UUIDUtil.getUUID());
+            courseFile.setValidFlag(0);
+            courseFile.setCreatedTime(LocalDateTime.now());
+            courseFile.setUpdatedTime(LocalDateTime.now());
+            boolean result = iCourseFileService.save(courseFile);
+            if (result) {
+                return Ret.ok().setData(courseFile);
+            } else {
+                return Ret.error().setMsg("新增失败");
+            }
+        } else {
+            return Ret.error().setMsg("任务内容不能为空");
+        }
+    }
+
+    @ApiOperation(value="上传任务", notes="")
+    @PostMapping(value = "/uploadTask")
+    public Ret uploadTask(@RequestParam(value = "file") MultipartFile file, @RequestBody CourseFile courseFile, HttpServletRequest request) throws IOException {
+        if (file.isEmpty()) {
+            System.out.println("文件为空");
+        }
+        String fileName = file.getOriginalFilename();  // 文件名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
+        String filePath = fileOriPath + UUIDUtil.getUUID() + "//"; // 上传后的路径
+//        fileName = UUID.randomUUID() + suffixName; // 新文件名
+        File dest = new File(filePath + fileName);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(dest);
+            courseFile.setFileName(fileName);
+            courseFile.setFilePath(filePath);
+            courseFile.setUpdatedTime(LocalDateTime.now());
+            boolean result = iCourseFileService.updateById(courseFile);
+        } catch (IOException e) {
+            return Ret.ok().setData("上传失败");
+        }
+        return Ret.ok().setData("上传成功");
     }
 
 }
