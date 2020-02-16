@@ -58,7 +58,7 @@ public class CourseFileController {
 
     @ApiOperation(value="上传学习视频", notes="")
     @PostMapping(value = "/fileUpload")
-    public Ret fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestBody CourseFile courseFile, HttpServletRequest request) throws IOException {
+    public Ret fileUpload(@RequestParam(value = "file") MultipartFile file,CourseFile courseFile, HttpServletRequest request) throws IOException {
         if (file.isEmpty()) {
             System.out.println("文件为空");
         }
