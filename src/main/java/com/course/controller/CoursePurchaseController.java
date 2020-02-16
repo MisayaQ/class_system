@@ -72,6 +72,8 @@ public class CoursePurchaseController {
                     CourseDetails courseDetails = iCourseDetailsService.getById(purchase.getDetailsId());
                     if(courseDetails != null){
                         purchase.setCourseName(courseDetails.getCName());
+                        purchase.setStartTime(courseDetails.getStartTime());
+                        purchase.setEndTime(courseDetails.getEndTime());
                     }
                 }
             }
