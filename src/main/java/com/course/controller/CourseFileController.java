@@ -141,6 +141,9 @@ public class CourseFileController {
         if(StringUtils.isNotEmpty(courseFile.getFileType())){
             queryWrapper.eq("file_type",courseFile.getFileType());
         }
+        if(StringUtils.isNotEmpty(courseFile.getFileName())){
+            queryWrapper.like("file_name",courseFile.getFileName());
+        }
         queryWrapper.orderByDesc("updated_time");
         Page<CourseFile> getList = iCourseFileService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
