@@ -201,4 +201,20 @@ public class CoursePurchaseController {
         return Ret.ok().setData(getList);
     }
 
+    @ApiOperation(value="课程购买人数", notes="")
+    @GetMapping("/getPurchaseCountByCourseId")
+    public Ret getPurchaseCountByCourseId(CoursePurchase coursePurchase) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if(StringUtils.isNotEmpty(coursePurchase.getDetailsId())){
+            queryWrapper.eq("details_id",coursePurchase.getDetailsId());
+        }
+        List<CoursePurchase> getList = iCoursePurchaseService.list(queryWrapper);
+        if (getList!= null && !getList.isEmpty()) {
+            return Ret.ok().setData(getList.size());
+        } else {
+            return Ret.ok().setData(0);
+        }
+
+    }
+
 }
