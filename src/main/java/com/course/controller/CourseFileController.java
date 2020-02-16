@@ -141,6 +141,9 @@ public class CourseFileController {
     public Ret getFileByPage(Integer page, Integer pageSize, CourseFile courseFile) {
         QueryWrapper queryWrapper = new QueryWrapper();
         Page pageInfo = new Page(page,pageSize);
+        if(StringUtils.isNotEmpty(courseFile.getFileType())){
+            queryWrapper.eq("file_type",courseFile.getFileType());
+        }
         queryWrapper.orderByDesc("updated_time");
         Page<CourseFile> getList = iCourseFileService.page(pageInfo,queryWrapper);
         return Ret.ok().setData(getList);
