@@ -112,4 +112,7 @@ public class CourseMenu implements Serializable {
     @TableField("menu_state")
     private String menuState;
 
+    @TableField(exist = false)
+    private String courseName;
+
 }

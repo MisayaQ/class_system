@@ -7,9 +7,11 @@ import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
 import com.course.entity.CoursePurchase;
 import com.course.entity.SysUser;
+import com.course.service.ICourseDetailsService;
 import com.course.service.ICourseMenuService;
 import com.course.service.ICoursePurchaseService;
 import com.course.service.ISysUserService;
+import com.course.utils.StringUtil;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +50,9 @@ public class CourseMenuController {
 
     @Autowired
     private ICoursePurchaseService iCoursePurchaseService;
+
+    @Autowired
+    private ICourseDetailsService iCourseDetailsService;
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
@@ -157,6 +162,12 @@ public class CourseMenuController {
                         SysUser getUser = iSysUserService.getById(cour.getTeacherId());
                         if (getUser != null) {
                             cour.setTeacherName(getUser.getUname());
+                        }
+                    }
+                    if (StringUtils.isNotEmpty(cour.getCourseId())) {
+                        CourseDetails getInfo = iCourseDetailsService.getById(cour.getCourseId());
+                        if(getInfo != null){
+                            cour.setCourseName(getInfo.getCName());
                         }
                     }
                     menuList.add(cour);
