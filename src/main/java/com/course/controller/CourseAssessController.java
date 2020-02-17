@@ -43,6 +43,9 @@ public class CourseAssessController {
         if(StringUtils.isNotEmpty(courseAssess.getContent())){
             queryWrapper.like("content",courseAssess.getContent());
         }
+        if(StringUtils.isNotEmpty(courseAssess.getCourseId())){
+            queryWrapper.eq("course_id",courseAssess.getCourseId());
+        }
         queryWrapper.orderByAsc("created_time");
         List<CourseAssess> getList = iCourseAssessService.list(queryWrapper);
         if (getList != null && !getList.isEmpty()) {
