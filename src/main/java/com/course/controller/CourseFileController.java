@@ -136,19 +136,12 @@ public class CourseFileController {
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getFileByPage")
     public Ret getFileByPage(Integer page, Integer pageSize, CourseFile courseFile) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        Page pageInfo = new Page(page,pageSize);
-        if(StringUtils.isNotEmpty(courseFile.getFileType())){
-            queryWrapper.eq("file_type",courseFile.getFileType());
-        }
+        courseFile.setPage((page-1)*pageSize);
+        courseFile.setPagesize(pageSize);
         if(StringUtils.isNotEmpty(courseFile.getFileName())){
-            queryWrapper.like("file_name",courseFile.getFileName());
+            courseFile.setFileName("%"+courseFile.getFileName()+"%");
         }
-        if(StringUtils.isNotEmpty(courseFile.getMenuId())){
-            queryWrapper.eq("menu_id",courseFile.getMenuId());
-        }
-        queryWrapper.orderByDesc("updated_time");
-        Page<CourseFile> getList = iCourseFileService.page(pageInfo,queryWrapper);
+        List<CourseFile> getList = iCourseFileService.queryFileByPage(courseFile);
         return Ret.ok().setData(getList);
     }
 

@@ -2,6 +2,9 @@ package com.course.mapper;
 
 import com.course.entity.CourseFile;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author test
  * @since 2019-12-25
  */
+@Repository
 public interface CourseFileMapper extends BaseMapper<CourseFile> {
-
+    List<CourseFile> queryFileByPage(CourseFile courseFile);
 }

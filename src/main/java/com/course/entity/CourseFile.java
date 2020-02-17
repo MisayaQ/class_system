@@ -104,5 +104,11 @@ public class CourseFile implements Serializable {
     @TableField("menu_id")
     private String menuId;
 
+    @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer pagesize;
+
 
 }
