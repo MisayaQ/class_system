@@ -32,6 +32,9 @@
         <if test="menuId != null and menuId != ''">
             and menu_id = #{menuId}
         </if>
+        <if test="detailsId != null and detailsId != ''">
+            and details_id = #{detailsId}
+        </if>
         order by updated_time desc,id
         limit #{page},#{pagesize}
     </select>
