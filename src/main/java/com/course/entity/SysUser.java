@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户管理 
+ * 用户管理
  * </p>
  *
  * @author test
@@ -106,5 +106,8 @@ public class SysUser implements Serializable {
 
     @TableField("resume")
     private String resume;
+
+    @TableField("signature")
+    private String signature;
 
 }

@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
- * 课程目录 
+ * 课程目录
  * </p>
  *
  * @author test
@@ -114,5 +114,8 @@ public class CourseMenu implements Serializable {
 
     @TableField(exist = false)
     private String courseName;
+
+    @TableField(exist = false)
+    private String timeUnite;
 
 }

@@ -30,13 +30,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/course/course-details")
 public class CourseDetailsController {
-    
+
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
 
     @Autowired
     private ISysUserService iSysUserService;
-    
+
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
     public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) {
@@ -56,6 +56,7 @@ public class CourseDetailsController {
         }
         queryWrapper.orderByDesc("updated_time");
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
+
         List<CourseDetails> detailsList = getList.getRecords();
         if (detailsList != null && !detailsList.isEmpty()) {
             for (CourseDetails cour : detailsList) {

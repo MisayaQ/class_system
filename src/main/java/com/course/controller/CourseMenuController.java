@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,6 +84,16 @@ public class CourseMenuController {
         }
         queryWrapper.orderByAsc("start_time");
         List<CourseMenu> getList = iCourseMenuService.list(queryWrapper);
+        for (CourseMenu menu : getList) {
+            Date startTime = menu.getStartTime();
+            Date endTime = menu.getEndTime();
+            SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat endFormat = new SimpleDateFormat(" HH:mm");
+            String start = startFormat.format(startTime);
+            String end = endFormat.format(endTime);
+            menu.setTimeUnite(start+" -"+end);
+            System.out.println(start+" -"+end);
+        }
         if (getList != null && !getList.isEmpty()) {
             for (CourseMenu cour : getList) {
                 if (StringUtils.isNotEmpty(cour.getTeacherId())) {
