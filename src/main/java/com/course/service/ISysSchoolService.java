@@ -1,5 +1,6 @@
 package com.course.service;
 
+import com.course.base.Ret;
 import com.course.entity.SysSchool;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysSchoolService extends IService<SysSchool> {
 
+    Ret updateSchool(SysSchool sysSchool);
 }

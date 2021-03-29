@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author test
@@ -24,6 +24,8 @@ public class SysSchool implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableField("id")
+    private String id;
     /**
      * 学校名称
      */
@@ -66,5 +68,8 @@ public class SysSchool implements Serializable {
     @TableField("updated_time")
     private LocalDateTime updatedTime;
 
+
+    @TableField("valid_flag")
+    private int validFlag;
 
 }
