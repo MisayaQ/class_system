@@ -92,7 +92,6 @@ public class CourseMenuController {
             String start = startFormat.format(startTime);
             String end = endFormat.format(endTime);
             menu.setTimeUnite(start+" -"+end);
-            System.out.println(start+" -"+end);
         }
         if (getList != null && !getList.isEmpty()) {
             for (CourseMenu cour : getList) {
