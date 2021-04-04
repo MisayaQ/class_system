@@ -50,27 +50,27 @@ public class CoursePurchaseController {
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
 
-    @ApiOperation(value="分页查询", notes="")
+    @ApiOperation(value = "分页查询", notes = "")
     @GetMapping("/getPurchaseByPage")
     public Ret getPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
         QueryWrapper queryWrapper = new QueryWrapper();
         CoursePurchase purchasequery = new CoursePurchase();
-        purchasequery.setPage((page-1)*pageSize);
+        purchasequery.setPage((page - 1) * pageSize);
         purchasequery.setPagesize(pageSize);
-        if(StringUtils.isNotEmpty(coursePurchase.getUserId())){
+        if (StringUtils.isNotEmpty(coursePurchase.getUserId())) {
             purchasequery.setUserId(coursePurchase.getUserId());
         }
-        if(StringUtils.isNotEmpty(coursePurchase.getCourseName())){
-            purchasequery.setCourseName("%"+coursePurchase.getCourseName()+"%");
+        if (StringUtils.isNotEmpty(coursePurchase.getCourseName())) {
+            purchasequery.setCourseName("%" + coursePurchase.getCourseName() + "%");
         }
         queryWrapper.orderByDesc("updated_time");
         List<CoursePurchase> getList = iCoursePurchaseService.queryPurByPage(purchasequery);
 //        List<CoursePurchase> purList = getList.getRecords();
-        if(getList != null && !getList.isEmpty()){
+        if (getList != null && !getList.isEmpty()) {
             for (CoursePurchase purchase : getList) {
                 if (StringUtils.isNotEmpty(purchase.getDetailsId())) {
                     CourseDetails courseDetails = iCourseDetailsService.getById(purchase.getDetailsId());
-                    if(courseDetails != null){
+                    if (courseDetails != null) {
                         purchase.setCourseName(courseDetails.getCName());
                         purchase.setStartTime(courseDetails.getStartTime());
                         purchase.setEndTime(courseDetails.getEndTime());
@@ -81,22 +81,13 @@ public class CoursePurchaseController {
         return Ret.ok().setData(getList);
     }
 
-    @ApiOperation(value="新增", notes="新增")
+    @ApiOperation(value = "新增", notes = "新增")
     @PostMapping("/addCoursePurchase")
     public Ret addCoursePurchase(CoursePurchase coursePurchase) {
-        coursePurchase.setId(UUIDUtil.getUUID());
-        coursePurchase.setValidFlag(0);
-        coursePurchase.setCreatedTime(LocalDateTime.now());
-        coursePurchase.setUpdatedTime(LocalDateTime.now());
-        boolean result = iCoursePurchaseService.save(coursePurchase);
-        if (result) {
-            return Ret.ok().setData(coursePurchase);
-        } else {
-            return Ret.error().setMsg("新增失败");
-        }
+        return iCoursePurchaseService.savePurches(coursePurchase);
     }
 
-    @ApiOperation(value="修改", notes="")
+    @ApiOperation(value = "修改", notes = "")
     @PutMapping("/updateCoursePurchase")
     public Ret updateCoursePurchase(@RequestBody CoursePurchase coursePurchase) {
         coursePurchase.setUpdatedTime(LocalDateTime.now());
@@ -108,7 +99,7 @@ public class CoursePurchaseController {
         }
     }
 
-    @ApiOperation(value = "批量删除", notes="")
+    @ApiOperation(value = "批量删除", notes = "")
     @PostMapping("/batchDelete")
     public Ret batchDelete(String ids) {
         if (org.apache.commons.lang.StringUtils.isNotEmpty(ids)) {
@@ -125,9 +116,9 @@ public class CoursePurchaseController {
         }
     }
 
-    @ApiOperation(value="统计总数", notes="")
+    @ApiOperation(value = "统计总数", notes = "")
     @GetMapping("/getPurchaseByCountAll")
-    public Ret getPurchaseByCountAll(String countType) throws Exception{
+    public Ret getPurchaseByCountAll(String countType) throws Exception {
         QueryWrapper queryWrapper = new QueryWrapper();
         Date stDate = new Date();
         Date enDate = new Date();
@@ -137,10 +128,10 @@ public class CoursePurchaseController {
         List<CountResult> getList = new ArrayList<>();
         CoursePurchase coursePurchase = new CoursePurchase();
         if ("day".equals(countType)) {
-            cal.add(Calendar.DATE,-7);
+            cal.add(Calendar.DATE, -7);
             stDate = cal.getTime();
             String startStr = sdf.format(stDate);
-        }else if ("month".equals(countType)) {
+        } else if ("month".equals(countType)) {
             int month = cal.get(Calendar.MONTH) + 1;
             int year = cal.get(Calendar.YEAR);
             String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
@@ -154,8 +145,8 @@ public class CoursePurchaseController {
         } else {
             return Ret.error().setMsg("只能为day,month,year类型");
         }
-        queryWrapper.gt("created_time",stDate);
-        queryWrapper.lt("created_time",enDate);
+        queryWrapper.gt("created_time", stDate);
+        queryWrapper.lt("created_time", enDate);
         getList = iCoursePurchaseService.list(queryWrapper);
         int counts = 0;
         if (getList != null && !getList.isEmpty()) {
@@ -164,9 +155,9 @@ public class CoursePurchaseController {
         return Ret.ok().setData(counts);
     }
 
-    @ApiOperation(value="统计图", notes="")
+    @ApiOperation(value = "统计图", notes = "")
     @GetMapping("/getPurchaseByCount")
-    public Ret getPurchaseByCount(String countType) throws Exception{
+    public Ret getPurchaseByCount(String countType) throws Exception {
         QueryWrapper queryWrapper = new QueryWrapper();
         Date stDate = new Date();
         Date enDate = new Date();
@@ -176,13 +167,13 @@ public class CoursePurchaseController {
         List<CountResult> getList = new ArrayList<>();
         CoursePurchase coursePurchase = new CoursePurchase();
         if ("day".equals(countType)) {
-            cal.add(Calendar.DATE,-7);
+            cal.add(Calendar.DATE, -7);
             stDate = cal.getTime();
             String startStr = sdf.format(stDate);
             coursePurchase.setTime1(startStr);
             coursePurchase.setTime2(endStr);
             getList = iCoursePurchaseService.countPurchaseDataByDay(coursePurchase);
-        }else if ("month".equals(countType)) {
+        } else if ("month".equals(countType)) {
             int month = cal.get(Calendar.MONTH) + 1;
             int year = cal.get(Calendar.YEAR);
             String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
@@ -201,15 +192,15 @@ public class CoursePurchaseController {
         return Ret.ok().setData(getList);
     }
 
-    @ApiOperation(value="课程购买人数", notes="")
+    @ApiOperation(value = "课程购买人数", notes = "")
     @GetMapping("/getPurchaseCountByCourseId")
     public Ret getPurchaseCountByCourseId(CoursePurchase coursePurchase) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        if(StringUtils.isNotEmpty(coursePurchase.getDetailsId())){
-            queryWrapper.eq("details_id",coursePurchase.getDetailsId());
+        if (StringUtils.isNotEmpty(coursePurchase.getDetailsId())) {
+            queryWrapper.eq("details_id", coursePurchase.getDetailsId());
         }
         List<CoursePurchase> getList = iCoursePurchaseService.list(queryWrapper);
-        if (getList!= null && !getList.isEmpty()) {
+        if (getList != null && !getList.isEmpty()) {
             return Ret.ok().setData(getList.size());
         } else {
             return Ret.ok().setData(0);

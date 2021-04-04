@@ -1,5 +1,6 @@
 package com.course.service;
 
+import com.course.base.Ret;
 import com.course.common.CountResult;
 import com.course.entity.CoursePurchase;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -21,4 +22,6 @@ public interface ICoursePurchaseService extends IService<CoursePurchase> {
     List<CountResult> countPurchaseDataByMonth(CoursePurchase coursePurchase);
 
     List<CoursePurchase> queryPurByPage(CoursePurchase coursePurchase);
+
+    Ret savePurches(CoursePurchase coursePurchase);
 }
