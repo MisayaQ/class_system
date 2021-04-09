@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
- * 课程购买记录表 
+ * 课程购买记录表
  * </p>
  *
  * @author test
@@ -83,6 +83,12 @@ public class CoursePurchase implements Serializable {
 
     @TableField(exist = false)
     private String courseName;
+
+    @TableField(exist = false)//用于前台结果显示
+    private String userName;
+
+    @TableField(exist = false)//用于前台传值查询
+    private String uname;
 
     @TableField(exist = false)
     private String time1;

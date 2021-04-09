@@ -1,6 +1,7 @@
 package com.course.controller;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
@@ -8,13 +9,21 @@ import com.course.entity.SysCount;
 import com.course.entity.SysUser;
 import com.course.service.ISysCountService;
 import com.course.service.ISysUserService;
+import cn.hutool.core.io.file.FileWriter;
 import com.course.utils.StringUtil;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -41,6 +50,9 @@ public class SysUserController {
 
     @Autowired
     private ISysCountService iSysCountService;
+
+//    @Value("${pic.Location}")
+//    private String picLocation;
 
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getUserByPage")
@@ -217,5 +229,58 @@ public class SysUserController {
             return Ret.error().setMsg("该角色下账号不存在");
         }
     }
+
+//    @ApiOperation(value = "上传头像")
+//    @PostMapping(path = "/uploadProfilePhoto")
+//    public Ret uploadProfilePhoto(@RequestParam(name = "photo") MultipartFile multipartFile, @RequestParam(name = "uId") String uId) throws IOException {
+//        if (multipartFile.isEmpty() || StringUtils.isEmpty(uId)) {
+//            return Ret.ok().setMsg("上传图片为空");
+//        }
+//        // 构造文件
+//        String uploadPath = picLocation + File.separator + uId + File.separator;
+//        String fileOriginalName = multipartFile.getOriginalFilename();
+//        String ext = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
+//        String fileNewName = UUIDUtil.getUUID() + ext;
+//        File pic = new File(uploadPath + fileNewName);
+//        FileUtil.touch(pic);
+//        // 写数据
+//        FileWriter writer = new FileWriter(pic);
+//        writer.writeFromStream(multipartFile.getInputStream());
+//
+//        if (0 < this.userService.savePic(uId, pic)) {
+//            return Ret.ok().setMsg("头像修改成功");
+//        }
+//        return Ret.ok().setMsg("头像修改失败");
+//    }
+//
+//    @ApiOperation(value = "获取头像图片流")
+//    @GetMapping(path = "/getProfilePicStream/{uId}")
+//    public void getProfilePicStream(@PathVariable String uId, HttpServletResponse response) throws IOException {
+//        File file = this.userPicService.getProfilePic(uId);
+//        String fileMime = FileUtil.getMimeType(file.getAbsolutePath());
+//        if (MimeTypeUtils.IMAGE_PNG_VALUE.equalsIgnoreCase(fileMime)) {
+//            response.setContentType(MimeTypeUtils.IMAGE_PNG_VALUE);
+//        } else {
+//            response.setContentType(MimeTypeUtils.IMAGE_JPEG_VALUE);
+//        }
+//
+//        OutputStream os = response.getOutputStream();
+//        FileUtil.writeToStream(file, os);
+//        os.flush();
+//        os.close();
+//    }
+//
+//    @ApiOperation(value = "获取头像Base64")
+//    @GetMapping(path = "/getProfilePicBase64/{uId}")
+//    public ReturnEntity getProfilePicBase64(@PathVariable String uId) throws IOException {
+//        File file = this.userPicService.getProfilePic(uId);
+///*        byte[] bytes;
+//        InputStream is = new FileInputStream(file);
+//        bytes = new byte[is.available()];
+//        is.read(bytes);
+//        is.close();
+//        logger.warn(Base64Utils.encodeToString(bytes));*/
+//        return ReturnEntity.ok().setData(Base64.encode(file)).setMsg("图片转为base64");
+//    }
 
 }

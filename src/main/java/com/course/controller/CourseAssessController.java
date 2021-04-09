@@ -4,8 +4,11 @@ package com.course.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.course.base.Ret;
 import com.course.entity.CourseAssess;
+import com.course.entity.CourseDetails;
+import com.course.entity.CoursePurchase;
 import com.course.entity.SysUser;
 import com.course.service.ICourseAssessService;
+import com.course.service.ICourseDetailsService;
 import com.course.service.ISysUserService;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +39,9 @@ public class CourseAssessController {
     @Autowired
     private ISysUserService iSysUserService;
 
+    @Autowired
+    private ICourseDetailsService iCourseDetailsService;
+
     @ApiOperation(value="列表查询", notes="")
     @GetMapping("/getAssessByList")
     public Ret getAssessByList(CourseAssess courseAssess) {
@@ -48,6 +54,40 @@ public class CourseAssessController {
         }
         queryWrapper.orderByAsc("created_time");
         List<CourseAssess> getList = iCourseAssessService.list(queryWrapper);
+        if (getList != null && !getList.isEmpty()) {
+            for (CourseAssess assess : getList) {
+                if (StringUtils.isNotEmpty(assess.getCourseId()) && StringUtils.isNotEmpty(assess.getUserId())) {
+                    CourseDetails courseDetails = iCourseDetailsService.getById(assess.getCourseId());
+                    SysUser user = iSysUserService.getById(assess.getUserId());
+                    if (courseDetails != null) {
+                        assess.setUserName(user.getUname());
+                        assess.setCourseName(courseDetails.getCName());
+                    }
+                }
+            }
+        }
+        return Ret.ok().setData(getList);
+    }
+
+
+    @ApiOperation(value="列表查询", notes="")
+    @GetMapping("/queryAssessByPage")
+    public Ret queryAssessByPage(Integer page, Integer pageSize, CourseAssess courseAssess) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        CourseAssess courseAssessquery = new CourseAssess();
+        courseAssessquery.setPage((page - 1) * pageSize);
+        courseAssessquery.setPagesize(pageSize);
+        if (StringUtils.isNotEmpty(courseAssess.getCourseId())) {
+            courseAssessquery.setCourseId("%" + courseAssess.getCourseId() + "%");
+        }
+        if (StringUtils.isNotEmpty(courseAssess.getCourseName())) {
+            courseAssessquery.setCourseName("%" + courseAssess.getCourseName() + "%");
+        }
+        if (StringUtils.isNotEmpty(courseAssess.getUserName())) {
+            courseAssessquery.setUserName("%" + courseAssess.getUserName() + "%");
+        }
+        queryWrapper.orderByAsc("created_time");
+        List<CourseAssess> getList = iCourseAssessService.queryPurByPage(courseAssessquery);
         if (getList != null && !getList.isEmpty()) {
             for (CourseAssess cour : getList) {
                 if (StringUtils.isNotEmpty(cour.getUserId())) {
@@ -62,6 +102,7 @@ public class CourseAssessController {
         }
         return Ret.ok().setData(getList);
     }
+
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseAssess")

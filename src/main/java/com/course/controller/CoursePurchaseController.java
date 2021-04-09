@@ -8,8 +8,10 @@ import com.course.common.CountResult;
 import com.course.entity.CourseDetails;
 import com.course.entity.CourseMenu;
 import com.course.entity.CoursePurchase;
+import com.course.entity.SysUser;
 import com.course.service.ICourseDetailsService;
 import com.course.service.ICoursePurchaseService;
+import com.course.service.ISysUserService;
 import com.course.utils.StringUtil;
 import com.course.utils.UUIDUtil;
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +52,9 @@ public class CoursePurchaseController {
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
 
+    @Autowired
+    private ISysUserService iSysUserService;
+
     @ApiOperation(value = "分页查询", notes = "")
     @GetMapping("/getPurchaseByPage")
     public Ret getPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
@@ -70,7 +75,9 @@ public class CoursePurchaseController {
             for (CoursePurchase purchase : getList) {
                 if (StringUtils.isNotEmpty(purchase.getDetailsId())) {
                     CourseDetails courseDetails = iCourseDetailsService.getById(purchase.getDetailsId());
+                    SysUser user = iSysUserService.getById(purchase.getUserId());
                     if (courseDetails != null) {
+                        purchase.setUserName(user.getUname());
                         purchase.setCourseName(courseDetails.getCName());
                         purchase.setStartTime(courseDetails.getStartTime());
                         purchase.setEndTime(courseDetails.getEndTime());
@@ -80,6 +87,8 @@ public class CoursePurchaseController {
         }
         return Ret.ok().setData(getList);
     }
+
+
 
     @ApiOperation(value = "新增", notes = "新增")
     @PostMapping("/addCoursePurchase")

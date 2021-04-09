@@ -2,6 +2,9 @@ package com.course.mapper;
 
 import com.course.entity.CourseAssess;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.course.entity.CoursePurchase;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CourseAssessMapper extends BaseMapper<CourseAssess> {
 
+    List<CourseAssess> queryPurByPage(CourseAssess courseAssessquery);
 }

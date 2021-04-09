@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author test
@@ -70,6 +70,15 @@ public class CourseAssess implements Serializable {
 
     @TableField(exist = false)
     private String userName;
+
+    @TableField(exist = false)
+    private String courseName;
+
+    @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer pagesize;
 
 
 }

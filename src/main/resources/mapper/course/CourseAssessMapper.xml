@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.mapper.CourseAssessMapper">
 
+    <resultMap id="BaseResultMap" type="com.course.entity.CourseAssess">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="course_id" property="courseId" />
+        <result column="content" property="content" />
+        <result column="access_level" property="assessLevel" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+    </resultMap>
+
+    <select id="queryPurByPage" parameterType="com.course.entity.CourseAssess" resultMap="BaseResultMap">
+        SELECT
+        course_assess.*
+        FROM
+        course_assess
+        left join course_details on course_assess.course_id = course_details.id
+        left join sys_user on course_assess.user_id = sys_user.id
+        where 1=1
+        <if test="courseId != null">
+            and course_assess.course_id = #{courseId}
+        </if>
+        <if test="courseName != null">
+            and course_details.c_name like #{courseName}
+        </if>
+        <if test="userName != null">
+            and sys_user.uname like #{userName}
+        </if>
+        order by updated_time desc,id
+        limit #{page},#{pagesize}
+    </select>
 </mapper>
