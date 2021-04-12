@@ -1,5 +1,7 @@
 package com.course.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.entity.CourseAssess;
 import com.course.entity.CoursePurchase;
 import com.course.mapper.CourseAssessMapper;
@@ -28,4 +30,5 @@ public class CourseAssessServiceImpl extends ServiceImpl<CourseAssessMapper, Cou
     public List<CourseAssess> queryPurByPage(CourseAssess courseAssessquery) {
         return courseAssessMapper.queryPurByPage(courseAssessquery);
     }
+
 }

@@ -55,7 +55,7 @@ public class SysSchoolController {
         if (StringUtils.isNotEmpty(sysUser.getSchoolType())) {
             queryWrapper.eq("school_type", sysUser.getSchoolType());
         }
-        queryWrapper.orderByDesc("updated_time");
+        queryWrapper.orderByDesc("id");
         Page pageInfo = new Page(page, pageSize);
         Page<SysSchool> getList = iSysSchoolService.page(pageInfo, queryWrapper);
         return Ret.ok().setData(getList);
@@ -68,7 +68,8 @@ public class SysSchoolController {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("school_name", sysSchool.getSchoolName());
         List<SysSchool> list = iSysSchoolService.list(queryWrapper);
-        if (list != null || list.size() != 0) {
+        System.out.println(list.size());
+        if (list.size() != 0) {
             return Ret.error().setMsg("学校已存在");
         } else {
             sysSchool.setId(UUIDUtil.getUUID());

@@ -40,9 +40,6 @@ public class SysSchoolServiceImpl extends ServiceImpl<SysSchoolMapper, SysSchool
                 }
             }
             sysSchool.setUpdatedTime(LocalDateTime.now());
-            List<String> properties = sysSchool.getSchoolProperties();
-            String property = String.join(",", properties);
-            sysSchool.setSchoolProperty(property);
             int result = sysSchoolMapper.updateById(sysSchool);
             if (result>0) {
                 return Ret.ok().setData(sysSchool);

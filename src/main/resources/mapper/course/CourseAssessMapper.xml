@@ -7,14 +7,14 @@
         <result column="user_id" property="userId" />
         <result column="course_id" property="courseId" />
         <result column="content" property="content" />
-        <result column="access_level" property="assessLevel" />
+        <result column="assess_level" property="assessLevel" />
         <result column="created_time" property="createdTime" />
         <result column="updated_time" property="updatedTime" />
     </resultMap>
 
     <select id="queryPurByPage" parameterType="com.course.entity.CourseAssess" resultMap="BaseResultMap">
         SELECT
-        course_assess.*
+        course_assess.*,course_details.c_name AS courseName
         FROM
         course_assess
         left join course_details on course_assess.course_id = course_details.id
@@ -32,4 +32,6 @@
         order by updated_time desc,id
         limit #{page},#{pagesize}
     </select>
+
+
 </mapper>

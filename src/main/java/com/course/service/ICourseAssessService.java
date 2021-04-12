@@ -1,5 +1,7 @@
 package com.course.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.entity.CourseAssess;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.course.entity.CoursePurchase;
@@ -17,4 +19,5 @@ import java.util.List;
 public interface ICourseAssessService extends IService<CourseAssess> {
 
     List<CourseAssess> queryPurByPage(CourseAssess courseAssessquery);
+
 }

@@ -14,9 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,7 +42,7 @@ public class CourseDetailsController {
 
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
-    public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) {
+    public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
         QueryWrapper queryWrapper = new QueryWrapper();
         Page pageInfo = new Page(page,pageSize);
         if(StringUtils.isNotEmpty(courseDetails.getTeacherIds())){
@@ -58,6 +61,25 @@ public class CourseDetailsController {
         Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
 
         List<CourseDetails> detailsList = getList.getRecords();
+
+        //计算结束时间剩余天数
+        Date nowTime = new Date();
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String now = simpleFormat.format(nowTime);
+        Iterator<CourseDetails> iterator = detailsList.iterator();
+        //删除过期课程
+        while (iterator.hasNext()) {
+            CourseDetails details = iterator.next();
+            Date endTime = details.getEndTime();
+            String end = simpleFormat.format(endTime);
+            long timeNow = simpleFormat.parse(now).getTime();
+            long timeEnd = simpleFormat.parse(end).getTime();
+            int deadline =  (int) (timeEnd - timeNow) / (1000 * 3600 * 24);
+            if (deadline <= 0) {
+                iterator.remove();
+            }
+            details.setDeadLine(String.valueOf(deadline));
+        }
         if (detailsList != null && !detailsList.isEmpty()) {
             for (CourseDetails cour : detailsList) {
                 if (StringUtils.isNotEmpty(cour.getTeacherIds())) {
@@ -69,12 +91,14 @@ public class CourseDetailsController {
                         SysUser getUser = iSysUserService.getById(id);
                         if (getUser != null) {
                             teacherNames += getUser.getUname() + ",";
+                            teacherNames = teacherNames.substring(0, teacherNames.length() - 1);
                         }
                     }
                     cour.setTeacherNames(teacherNames);
                 }
             }
         }
+        getList.setRecords(detailsList);
         return Ret.ok().setData(getList);
     }
 

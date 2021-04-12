@@ -80,5 +80,8 @@ public class CourseAssess implements Serializable {
     @TableField(exist = false)
     private Integer pagesize;
 
+    @TableField(exist = false)
+    private Integer total;
+
 
 }

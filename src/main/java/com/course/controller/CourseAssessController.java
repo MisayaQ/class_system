@@ -2,6 +2,7 @@ package com.course.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
 import com.course.entity.CourseAssess;
 import com.course.entity.CourseDetails;
@@ -42,7 +43,7 @@ public class CourseAssessController {
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
 
-    @ApiOperation(value="列表查询", notes="")
+    @ApiOperation(value="列表查询1", notes="")
     @GetMapping("/getAssessByList")
     public Ret getAssessByList(CourseAssess courseAssess) {
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -75,8 +76,10 @@ public class CourseAssessController {
     public Ret queryAssessByPage(Integer page, Integer pageSize, CourseAssess courseAssess) {
         QueryWrapper queryWrapper = new QueryWrapper();
         CourseAssess courseAssessquery = new CourseAssess();
-        courseAssessquery.setPage((page - 1) * pageSize);
+        page = (page - 1) * pageSize;
+        courseAssessquery.setPage(page);
         courseAssessquery.setPagesize(pageSize);
+        Page pageInfo = new Page();
         if (StringUtils.isNotEmpty(courseAssess.getCourseId())) {
             courseAssessquery.setCourseId("%" + courseAssess.getCourseId() + "%");
         }
@@ -88,6 +91,10 @@ public class CourseAssessController {
         }
         queryWrapper.orderByAsc("created_time");
         List<CourseAssess> getList = iCourseAssessService.queryPurByPage(courseAssessquery);
+        Page<CourseAssess> list = iCourseAssessService.page(pageInfo,queryWrapper);
+        for (CourseAssess assess : getList) {
+            System.out.println(assess.getAssessLevel());
+        }
         if (getList != null && !getList.isEmpty()) {
             for (CourseAssess cour : getList) {
                 if (StringUtils.isNotEmpty(cour.getUserId())) {
@@ -100,7 +107,8 @@ public class CourseAssessController {
                 }
             }
         }
-        return Ret.ok().setData(getList);
+        list.setRecords(getList);
+        return Ret.ok().setData(list);
     }
 
 

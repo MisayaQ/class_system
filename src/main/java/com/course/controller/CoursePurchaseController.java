@@ -68,6 +68,9 @@ public class CoursePurchaseController {
         if (StringUtils.isNotEmpty(coursePurchase.getCourseName())) {
             purchasequery.setCourseName("%" + coursePurchase.getCourseName() + "%");
         }
+        if (StringUtils.isNotEmpty(coursePurchase.getUname())) {
+            purchasequery.setUname("%" + coursePurchase.getUname() + "%");
+        }
         queryWrapper.orderByDesc("updated_time");
         List<CoursePurchase> getList = iCoursePurchaseService.queryPurByPage(purchasequery);
 //        List<CoursePurchase> purList = getList.getRecords();

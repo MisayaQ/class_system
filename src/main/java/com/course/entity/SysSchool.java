@@ -74,7 +74,4 @@ public class SysSchool implements Serializable {
     @TableField("valid_flag")
     private int validFlag;
 
-    @TableField(exist = false)
-    private List<String> schoolProperties;
-
 }

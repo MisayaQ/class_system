@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
- * 课程详情表 
+ * 课程详情表
  * </p>
  *
  * @author test
@@ -26,6 +26,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 @TableName("course_details")
 public class CourseDetails implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
 
@@ -136,4 +137,8 @@ public class CourseDetails implements Serializable {
 
     @TableField("tips")
     private String tips;
+
+    @TableField(exist = false)
+    private String deadLine;
+
 }
