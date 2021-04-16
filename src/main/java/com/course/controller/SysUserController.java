@@ -183,7 +183,7 @@ public class SysUserController {
 
     @ApiOperation(value="登录", notes="")
     @GetMapping("/login")
-    public Ret login(String account,String password,String userRole) throws Exception {
+    public Ret userLogin(String account,String password,String userRole) throws Exception {
         if(StringUtils.isEmpty(account)){
             return Ret.error().setMsg("用户名不能为空");
         } else if (StringUtils.isEmpty(password)) {
