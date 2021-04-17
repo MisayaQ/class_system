@@ -10,12 +10,14 @@ import com.course.mapper.SysUserMapper;
 import com.course.service.ICourseDetailsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.course.service.ISysUserService;
+import com.course.utils.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -94,6 +96,7 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
         return Ret.ok().setData(getList);
     }
 
+
     @Override
     public Ret queryCourseByPage(Integer page, Integer pageSize, CourseDetails courseDetails) throws ParseException {
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -135,6 +138,72 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
         }
         getList.setRecords(detailsList);
         return Ret.ok().setData(getList);
+    }
+
+    @Override
+    public Ret saveUser(CourseDetails courseDetails) {
+        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
+            // 查询账号是否已存在
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("c_name",courseDetails.getCName());
+            List<CourseDetails> getList = courseDetailsMapper.selectList(queryWrapper);
+            if (getList != null && !getList.isEmpty()) {
+                return Ret.error().setMsg("课程名称已存在");
+            } else {
+                courseDetails.setId(UUIDUtil.getUUID());
+                courseDetails.setValidFlag(0);
+                courseDetails.setCreatedTime(new Date());
+                courseDetails.setUpdatedTime(new Date());
+                int result = courseDetailsMapper.insert(courseDetails);
+                if (result > 0) {
+                    return Ret.ok().setData(courseDetails);
+                } else {
+                    return Ret.error().setMsg("新增失败");
+                }
+            }
+        } else {
+            return Ret.error().setMsg("课程名称不能为空");
+        }
+    }
+
+    @Override
+    public Ret updateUser(CourseDetails courseDetails) {
+        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
+            // 查询账号是否已存在
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("c_name",courseDetails.getCName());
+            List<CourseDetails> getList = courseDetailsMapper.selectList(queryWrapper);
+            if (getList != null && !getList.isEmpty()) {
+                if (getList.size() > 1 || (getList.size() == 1 && !courseDetails.getId().equals(getList.get(0).getId()))) {
+                    return Ret.error().setMsg("课程名称已存在");
+                }
+            }
+            courseDetails.setUpdatedTime(new Date());
+            int result = courseDetailsMapper.updateById(courseDetails);
+            if (result > 0) {
+                return Ret.ok().setData(courseDetails);
+            } else {
+                return Ret.error().setMsg("修改失败");
+            }
+        } else {
+            return Ret.error().setMsg("课程名称不能为空");
+        }
+    }
+
+    @Override
+    public Ret deleteUser(String ids) {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(ids)) {
+            String[] idArr = ids.split(",");
+            List<String> idList = Arrays.asList(idArr);
+            int result = courseDetailsMapper.deleteBatchIds(idList);
+            if (result > 0) {
+                return Ret.ok().setMsg("删除成功");
+            } else {
+                return Ret.error().setMsg("删除失败");
+            }
+        } else {
+            return Ret.error().setMsg("请选择要删除的数据");
+        }
     }
 
 

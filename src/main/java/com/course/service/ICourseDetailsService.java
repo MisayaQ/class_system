@@ -19,4 +19,10 @@ public interface ICourseDetailsService extends IService<CourseDetails> {
     Ret queryCourseByPage(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException;
 
     Ret queryCourseByPageInStore(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException;
+
+    Ret saveUser(CourseDetails courseDetails);
+
+    Ret updateUser(CourseDetails courseDetails);
+
+    Ret deleteUser(String ids);
 }

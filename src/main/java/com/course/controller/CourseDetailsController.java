@@ -44,82 +44,31 @@ public class CourseDetailsController {
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
     public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
-        return iCourseDetailsService.queryCourseByPage(page,page,courseDetails);
+        return iCourseDetailsService.queryCourseByPage(page,pageSize,courseDetails);
     }
 
     @ApiOperation(value="分页查询 课程商城", notes="")
     @GetMapping("/getCourseDetailsByPages")
     public Ret getCourseDetailsByPage1(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
-        return iCourseDetailsService.queryCourseByPageInStore(page,page,courseDetails);
+        return iCourseDetailsService.queryCourseByPageInStore(page,pageSize,courseDetails);
     }
 
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseDetails")
     public Ret addCourseDetails(@RequestBody CourseDetails courseDetails) {
-        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
-            // 查询账号是否已存在
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("c_name",courseDetails.getCName());
-            List<CourseDetails> getList = iCourseDetailsService.list(queryWrapper);
-            if (getList != null && !getList.isEmpty()) {
-                return Ret.error().setMsg("课程名称已存在");
-            } else {
-                courseDetails.setId(UUIDUtil.getUUID());
-                courseDetails.setValidFlag(0);
-                courseDetails.setCreatedTime(new Date());
-                courseDetails.setUpdatedTime(new Date());
-                boolean result = iCourseDetailsService.save(courseDetails);
-                if (result) {
-                    return Ret.ok().setData(courseDetails);
-                } else {
-                    return Ret.error().setMsg("新增失败");
-                }
-            }
-        } else {
-            return Ret.error().setMsg("课程名称不能为空");
-        }
+        return iCourseDetailsService.saveUser(courseDetails);
     }
 
     @ApiOperation(value="修改", notes="")
     @PutMapping("/updateCourseDetails")
     public Ret updateCourseDetails(@RequestBody CourseDetails courseDetails) {
-        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
-            // 查询账号是否已存在
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("c_name",courseDetails.getCName());
-            List<CourseDetails> getList = iCourseDetailsService.list(queryWrapper);
-            if (getList != null && !getList.isEmpty()) {
-                if (getList.size() > 1 || (getList.size() == 1 && !courseDetails.getId().equals(getList.get(0).getId()))) {
-                    return Ret.error().setMsg("课程名称已存在");
-                }
-            }
-            courseDetails.setUpdatedTime(new Date());
-            boolean result = iCourseDetailsService.updateById(courseDetails);
-            if (result) {
-                return Ret.ok().setData(courseDetails);
-            } else {
-                return Ret.error().setMsg("修改失败");
-            }
-        } else {
-            return Ret.error().setMsg("课程名称不能为空");
-        }
+        return iCourseDetailsService.updateUser(courseDetails);
     }
 
     @ApiOperation(value = "批量删除", notes="")
     @PostMapping("/batchDelete")
     public Ret batchDelete(String ids) {
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(ids)) {
-            String[] idArr = ids.split(",");
-            List<String> idList = Arrays.asList(idArr);
-            boolean result = iCourseDetailsService.removeByIds(idList);
-            if (result) {
-                return Ret.ok().setMsg("删除成功");
-            } else {
-                return Ret.error().setMsg("删除失败");
-            }
-        } else {
-            return Ret.error().setMsg("请选择要删除的数据");
-        }
+        return iCourseDetailsService.deleteUser(ids);
     }
 
     @ApiOperation(value="根据id查询", notes="")
