@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -43,63 +44,13 @@ public class CourseDetailsController {
     @ApiOperation(value="分页查询", notes="")
     @GetMapping("/getCourseDetailsByPage")
     public Ret getCourseDetailsByPage(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        Page pageInfo = new Page(page,pageSize);
-        if(StringUtils.isNotEmpty(courseDetails.getTeacherIds())){
-            queryWrapper.like("teacher_ids",courseDetails.getTeacherIds());
-        }
-        if(StringUtils.isNotEmpty(courseDetails.getCName())){
-            queryWrapper.like("c_name",courseDetails.getCName());
-        }
-        if(StringUtils.isNotEmpty(courseDetails.getCourseCode())){
-            queryWrapper.like("course_code",courseDetails.getCourseCode());
-        }
-        if(courseDetails.getIsTop() != null){
-            queryWrapper.eq("is_top",courseDetails.getIsTop());
-        }
-        queryWrapper.orderByDesc("updated_time");
-        Page<CourseDetails> getList = iCourseDetailsService.page(pageInfo,queryWrapper);
+        return iCourseDetailsService.queryCourseByPage(page,page,courseDetails);
+    }
 
-        List<CourseDetails> detailsList = getList.getRecords();
-
-        //计算结束时间剩余天数
-        Date nowTime = new Date();
-        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String now = simpleFormat.format(nowTime);
-        Iterator<CourseDetails> iterator = detailsList.iterator();
-        //删除过期课程
-        while (iterator.hasNext()) {
-            CourseDetails details = iterator.next();
-            Date endTime = details.getEndTime();
-            String end = simpleFormat.format(endTime);
-            long timeNow = simpleFormat.parse(now).getTime();
-            long timeEnd = simpleFormat.parse(end).getTime();
-            int deadline =  (int) (timeEnd - timeNow) / (1000 * 3600 * 24);
-            if (deadline <= 0) {
-                iterator.remove();
-            }
-            details.setDeadLine(String.valueOf(deadline));
-        }
-        if (detailsList != null && !detailsList.isEmpty()) {
-            for (CourseDetails cour : detailsList) {
-                if (StringUtils.isNotEmpty(cour.getTeacherIds())) {
-                    String teacherNames = "";
-                    String[] ids = cour.getTeacherIds().split(",");
-                    for(String id : ids){
-                        QueryWrapper query = new QueryWrapper();
-                        query.eq("ID",id);
-                        SysUser getUser = iSysUserService.getById(id);
-                        if (getUser != null) {
-                            teacherNames += getUser.getUname() + ",";
-                            teacherNames = teacherNames.substring(0, teacherNames.length() - 1);
-                        }
-                    }
-                    cour.setTeacherNames(teacherNames);
-                }
-            }
-        }
-        getList.setRecords(detailsList);
-        return Ret.ok().setData(getList);
+    @ApiOperation(value="分页查询 课程商城", notes="")
+    @GetMapping("/getCourseDetailsByPages")
+    public Ret getCourseDetailsByPage1(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
+        return iCourseDetailsService.queryCourseByPageInStore(page,page,courseDetails);
     }
 
     @ApiOperation(value="新增", notes="新增")
@@ -200,4 +151,6 @@ public class CourseDetailsController {
         List<CourseDetails> getList = iCourseDetailsService.list(queryWrapper);
         return Ret.ok().setData(getList);
     }
+
+
 }

@@ -1,7 +1,10 @@
 package com.course.service;
 
+import com.course.base.Ret;
 import com.course.entity.CourseDetails;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.text.ParseException;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseDetailsService extends IService<CourseDetails> {
 
+    Ret queryCourseByPage(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException;
+
+    Ret queryCourseByPageInStore(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException;
 }
