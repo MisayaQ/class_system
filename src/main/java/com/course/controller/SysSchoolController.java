@@ -68,12 +68,10 @@ public class SysSchoolController {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("school_name", sysSchool.getSchoolName());
         List<SysSchool> list = iSysSchoolService.list(queryWrapper);
-        System.out.println(list.size());
         if (list.size() != 0) {
             return Ret.error().setMsg("学校已存在");
         } else {
             sysSchool.setId(UUIDUtil.getUUID());
-            sysSchool.setValidFlag(0);
             sysSchool.setCreatedTime(LocalDateTime.now());
             sysSchool.setUpdatedTime(LocalDateTime.now());
             boolean result = iSysSchoolService.save(sysSchool);

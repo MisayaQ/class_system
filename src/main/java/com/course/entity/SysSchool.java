@@ -71,7 +71,5 @@ public class SysSchool implements Serializable {
     private LocalDateTime updatedTime;
 
 
-    @TableField("valid_flag")
-    private int validFlag;
 
 }
