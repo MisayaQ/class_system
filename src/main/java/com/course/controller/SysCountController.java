@@ -37,64 +37,13 @@ public class SysCountController {
     @ApiOperation(value="统计总数", notes="")
     @GetMapping("/getCountListAll")
     public Ret getCountListAll(String countType) throws Exception{
-        QueryWrapper queryWrapper = new QueryWrapper();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String stDate = "";
-        String enDate = sdf.format(new Date());
-        Calendar cal = Calendar.getInstance();
-        if ("day".equals(countType)) {
-            cal.add(Calendar.DATE,-7);
-            stDate = sdf.format(cal.getTime());
-        }else if ("month".equals(countType)) {
-            int month = cal.get(Calendar.MONTH) + 1;
-            int year = cal.get(Calendar.YEAR);
-            stDate = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
-        } else if ("year".equals(countType)) {
-            int year = cal.get(Calendar.YEAR);
-            stDate = String.valueOf(year) + "-01-01 00:00:00";
-        } else {
-            return Ret.error().setMsg("只能为day,month,year类型");
-        }
-        SysCount sysCount = new SysCount();
-        sysCount.setTime1(stDate);
-        sysCount.setTime2(enDate);
-        int counts = iSysCountService.countAllDatas(sysCount);
-        return Ret.ok().setData(counts);
+        return iSysCountService.getCountListAll(countType);
     }
 
     @ApiOperation(value="统计图表", notes="")
     @GetMapping("/getCountList")
     public Ret getCountList(String countType) throws Exception{
-        QueryWrapper queryWrapper = new QueryWrapper();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String stDate = "";
-        String enDate = sdf.format(new Date());
-        Calendar cal = Calendar.getInstance();
-        List<CountResult> getList = new ArrayList<>();
-        SysCount sysCount = new SysCount();
-        if ("day".equals(countType)) {
-            cal.add(Calendar.DATE,-7);
-            stDate = sdf.format(cal.getTime());
-            sysCount.setTime1(stDate);
-            sysCount.setTime2(enDate);
-            getList = iSysCountService.countDataByDay(sysCount);
-        }else if ("month".equals(countType)) {
-            int month = cal.get(Calendar.MONTH) + 1;
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
-            sysCount.setTime1(date);
-            sysCount.setTime2(enDate);
-            getList = iSysCountService.countDataByDay(sysCount);
-        } else if ("year".equals(countType)) {
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-01-01 00:00:00";
-            sysCount.setTime1(date);
-            sysCount.setTime2(enDate);
-            getList = iSysCountService.countDataByMonth(sysCount);
-        } else {
-            return Ret.error().setMsg("只能为day,month,year类型");
-        }
+        return iSysCountService.getCountList(countType);
 
-        return Ret.ok().setData(getList);
     }
 }

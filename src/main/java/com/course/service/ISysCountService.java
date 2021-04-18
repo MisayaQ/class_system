@@ -1,5 +1,6 @@
 package com.course.service;
 
+import com.course.base.Ret;
 import com.course.common.CountResult;
 import com.course.entity.SysCount;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,4 +21,8 @@ public interface ISysCountService extends IService<SysCount> {
     List<CountResult> countDataByDay(SysCount sysCount);
 
     List<CountResult> countDataByMonth(SysCount sysCount);
+
+    Ret getCountListAll(String countType);
+
+    Ret getCountList(String countType);
 }

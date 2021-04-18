@@ -43,7 +43,7 @@ public class CourseAssessController {
     @Autowired
     private ICourseDetailsService iCourseDetailsService;
 
-    @ApiOperation(value="列表查询1", notes="")
+    @ApiOperation(value="列表查询-课程评论-不分页", notes="")
     @GetMapping("/getAssessByList")
     public Ret getAssessByList(CourseAssess courseAssess) {
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -71,44 +71,10 @@ public class CourseAssessController {
     }
 
 
-    @ApiOperation(value="列表查询", notes="")
+    @ApiOperation(value="列表查询-评论管理-分页", notes="")
     @GetMapping("/queryAssessByPage")
     public Ret queryAssessByPage(Integer page, Integer pageSize, CourseAssess courseAssess) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        CourseAssess courseAssessquery = new CourseAssess();
-        page = (page - 1) * pageSize;
-        courseAssessquery.setPage(page);
-        courseAssessquery.setPagesize(pageSize);
-        Page pageInfo = new Page();
-        if (StringUtils.isNotEmpty(courseAssess.getCourseId())) {
-            courseAssessquery.setCourseId("%" + courseAssess.getCourseId() + "%");
-        }
-        if (StringUtils.isNotEmpty(courseAssess.getCourseName())) {
-            courseAssessquery.setCourseName("%" + courseAssess.getCourseName() + "%");
-        }
-        if (StringUtils.isNotEmpty(courseAssess.getUserName())) {
-            courseAssessquery.setUserName("%" + courseAssess.getUserName() + "%");
-        }
-        queryWrapper.orderByAsc("created_time");
-        List<CourseAssess> getList = iCourseAssessService.queryPurByPage(courseAssessquery);
-        Page<CourseAssess> list = iCourseAssessService.page(pageInfo,queryWrapper);
-        for (CourseAssess assess : getList) {
-            System.out.println(assess.getAssessLevel());
-        }
-        if (getList != null && !getList.isEmpty()) {
-            for (CourseAssess cour : getList) {
-                if (StringUtils.isNotEmpty(cour.getUserId())) {
-                    QueryWrapper query = new QueryWrapper();
-                    query.eq("ID",cour.getUserId());
-                    SysUser getUser = iSysUserService.getById(cour.getUserId());
-                    if (getUser != null) {
-                        cour.setUserName(getUser.getUname());
-                    }
-                }
-            }
-        }
-        list.setRecords(getList);
-        return Ret.ok().setData(list);
+        return iCourseAssessService.selectAssesssByPage(page,pageSize,courseAssess);
     }
 
 

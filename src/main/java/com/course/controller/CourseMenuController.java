@@ -50,12 +50,6 @@ public class CourseMenuController {
     @Autowired
     private ISysUserService iSysUserService;
 
-    @Autowired
-    private ICoursePurchaseService iCoursePurchaseService;
-
-    @Autowired
-    private ICourseDetailsService iCourseDetailsService;
-
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
     public Ret addCourseMenu(@RequestBody CourseMenu courseMenu) {
@@ -78,34 +72,8 @@ public class CourseMenuController {
     @ApiOperation(value="列表查询", notes="")
     @GetMapping("/getMenuByList")
     public Ret getMenuByList(CourseMenu courseMenu) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        if(StringUtils.isNotEmpty(courseMenu.getCourseId())){
-            queryWrapper.eq("course_id",courseMenu.getCourseId());
-        }
-        queryWrapper.orderByAsc("start_time");
-        List<CourseMenu> getList = iCourseMenuService.list(queryWrapper);
-        for (CourseMenu menu : getList) {
-            Date startTime = menu.getStartTime();
-            Date endTime = menu.getEndTime();
-            SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            SimpleDateFormat endFormat = new SimpleDateFormat(" HH:mm");
-            String start = startFormat.format(startTime);
-            String end = endFormat.format(endTime);
-            menu.setTimeUnite(start+" -"+end);
-        }
-        if (getList != null && !getList.isEmpty()) {
-            for (CourseMenu cour : getList) {
-                if (StringUtils.isNotEmpty(cour.getTeacherId())) {
-                    QueryWrapper query = new QueryWrapper();
-                    query.eq("ID",cour.getTeacherId());
-                    SysUser getUser = iSysUserService.getById(cour.getTeacherId());
-                    if (getUser != null) {
-                        cour.setTeacherName(getUser.getUname());
-                    }
-                }
-            }
-        }
-        return Ret.ok().setData(getList);
+
+        return iCourseMenuService.slelectMenuByList(courseMenu);
     }
 
     @ApiOperation(value="修改", notes="")
@@ -145,47 +113,7 @@ public class CourseMenuController {
     @ApiOperation(value="今日课程", notes="")
     @GetMapping("/getMenuByToday")
     public Ret getMenuByToday(String userId) {
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        int day = cal.get(Calendar.DATE);
-        String stDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" +String.valueOf(day) + " 00:00:00";
-        String edDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" +String.valueOf(day) + " 23:59:59";
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.gt("start_time",stDate);
-        queryWrapper.lt("start_time",edDate);
-        queryWrapper.orderByDesc("updated_time");
-        List<CourseMenu> getAllList = iCourseMenuService.list(queryWrapper);
-        QueryWrapper wapper1 = new QueryWrapper();
-        wapper1.eq("user_id",userId);
-        List<CoursePurchase> purList = iCoursePurchaseService.list(wapper1);
-        List<CourseMenu> menuList = new ArrayList<>();
-        if (getAllList != null && !getAllList.isEmpty() && purList != null && !purList.isEmpty()) {
-            List<String> getPurId = new ArrayList<>();
-            for(CoursePurchase coursePurchase : purList){
-                getPurId.add(coursePurchase.getDetailsId());
-            }
-            for (CourseMenu cour : getAllList) {
-                if(getPurId.contains(cour.getCourseId())){
-                    if (StringUtils.isNotEmpty(cour.getTeacherId())) {
-                        QueryWrapper query = new QueryWrapper();
-                        query.eq("ID",cour.getTeacherId());
-                        SysUser getUser = iSysUserService.getById(cour.getTeacherId());
-                        if (getUser != null) {
-                            cour.setTeacherName(getUser.getUname());
-                        }
-                    }
-                    if (StringUtils.isNotEmpty(cour.getCourseId())) {
-                        CourseDetails getInfo = iCourseDetailsService.getById(cour.getCourseId());
-                        if(getInfo != null){
-                            cour.setCourseName(getInfo.getCName());
-                        }
-                    }
-                    menuList.add(cour);
-                }
-            }
-        }
-        return Ret.ok().setData(menuList);
+        return iCourseMenuService.selectTodayCourse(userId);
     }
 
 

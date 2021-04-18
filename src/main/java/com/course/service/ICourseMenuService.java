@@ -1,5 +1,6 @@
 package com.course.service;
 
+import com.course.base.Ret;
 import com.course.entity.CourseMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseMenuService extends IService<CourseMenu> {
 
+    Ret selectTodayCourse(String userId);
+
+    Ret slelectMenuByList(CourseMenu courseMenu);
 }
