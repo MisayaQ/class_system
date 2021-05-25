@@ -41,23 +41,23 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
     private SysUserMapper sysUserMapper;
 
     @Override
-    public Ret queryCourseByPageInStore(Integer page, Integer pageSize,CourseDetails courseDetails) throws ParseException {
+    public Ret queryCourseByPageInStore(Integer page, Integer pageSize, CourseDetails courseDetails) throws ParseException {
         QueryWrapper queryWrapper = new QueryWrapper();
-        Page pageInfo = new Page(page,pageSize);
-        if(StringUtils.isNotEmpty(courseDetails.getTeacherIds())){
-            queryWrapper.like("teacher_ids",courseDetails.getTeacherIds());
+        Page pageInfo = new Page(page, pageSize);
+        if (StringUtils.isNotEmpty(courseDetails.getTeacherIds())) {
+            queryWrapper.like("teacher_ids", courseDetails.getTeacherIds());
         }
-        if(StringUtils.isNotEmpty(courseDetails.getCName())){
-            queryWrapper.like("c_name",courseDetails.getCName());
+        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
+            queryWrapper.like("c_name", courseDetails.getCName());
         }
-        if(StringUtils.isNotEmpty(courseDetails.getCourseCode())){
-            queryWrapper.like("course_code",courseDetails.getCourseCode());
+        if (StringUtils.isNotEmpty(courseDetails.getCourseCode())) {
+            queryWrapper.like("course_code", courseDetails.getCourseCode());
         }
-        if(courseDetails.getIsTop() != null){
-            queryWrapper.eq("is_top",courseDetails.getIsTop());
+        if (courseDetails.getIsTop() != null) {
+            queryWrapper.eq("is_top", courseDetails.getIsTop());
         }
         queryWrapper.orderByDesc("updated_time");
-        Page<CourseDetails> getList = courseDetailsMapper.selectPage(pageInfo,queryWrapper);
+        Page<CourseDetails> getList = courseDetailsMapper.selectPage(pageInfo, queryWrapper);
 
         List<CourseDetails> detailsList = getList.getRecords();
 
@@ -79,9 +79,9 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
                 if (StringUtils.isNotEmpty(cour.getTeacherIds())) {
                     String teacherNames = "";
                     String[] ids = cour.getTeacherIds().split(",");
-                    for(String id : ids){
+                    for (String id : ids) {
                         QueryWrapper query = new QueryWrapper();
-                        query.eq("ID",id);
+                        query.eq("ID", id);
                         SysUser getUser = sysUserMapper.selectById(id);
                         if (getUser != null) {
                             teacherNames += getUser.getUname() + ",";
@@ -100,21 +100,21 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
     @Override
     public Ret queryCourseByPage(Integer page, Integer pageSize, CourseDetails courseDetails) throws ParseException {
         QueryWrapper queryWrapper = new QueryWrapper();
-        Page pageInfo = new Page(page,pageSize);
-        if(StringUtils.isNotEmpty(courseDetails.getTeacherIds())){
-            queryWrapper.like("teacher_ids",courseDetails.getTeacherIds());
+        Page pageInfo = new Page(page, pageSize);
+        if (StringUtils.isNotEmpty(courseDetails.getTeacherIds())) {
+            queryWrapper.like("teacher_ids", courseDetails.getTeacherIds());
         }
-        if(StringUtils.isNotEmpty(courseDetails.getCName())){
-            queryWrapper.like("c_name",courseDetails.getCName());
+        if (StringUtils.isNotEmpty(courseDetails.getCName())) {
+            queryWrapper.like("c_name", courseDetails.getCName());
         }
-        if(StringUtils.isNotEmpty(courseDetails.getCourseCode())){
-            queryWrapper.like("course_code",courseDetails.getCourseCode());
+        if (StringUtils.isNotEmpty(courseDetails.getCourseCode())) {
+            queryWrapper.like("course_code", courseDetails.getCourseCode());
         }
-        if(courseDetails.getIsTop() != null){
-            queryWrapper.eq("is_top",courseDetails.getIsTop());
+        if (courseDetails.getIsTop() != null) {
+            queryWrapper.eq("is_top", courseDetails.getIsTop());
         }
         queryWrapper.orderByDesc("updated_time");
-        Page<CourseDetails> getList = courseDetailsMapper.selectPage(pageInfo,queryWrapper);
+        Page<CourseDetails> getList = courseDetailsMapper.selectPage(pageInfo, queryWrapper);
 
         List<CourseDetails> detailsList = getList.getRecords();
 
@@ -123,9 +123,9 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
                 if (StringUtils.isNotEmpty(cour.getTeacherIds())) {
                     String teacherNames = "";
                     String[] ids = cour.getTeacherIds().split(",");
-                    for(String id : ids){
+                    for (String id : ids) {
                         QueryWrapper query = new QueryWrapper();
-                        query.eq("ID",id);
+                        query.eq("ID", id);
                         SysUser getUser = sysUserMapper.selectById(id);
                         if (getUser != null) {
                             teacherNames += getUser.getUname() + ",";
@@ -145,7 +145,7 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
         if (StringUtils.isNotEmpty(courseDetails.getCName())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("c_name",courseDetails.getCName());
+            queryWrapper.eq("c_name", courseDetails.getCName());
             List<CourseDetails> getList = courseDetailsMapper.selectList(queryWrapper);
             if (getList != null && !getList.isEmpty()) {
                 return Ret.error().setMsg("课程名称已存在");
@@ -171,7 +171,7 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
         if (StringUtils.isNotEmpty(courseDetails.getCName())) {
             // 查询账号是否已存在
             QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("c_name",courseDetails.getCName());
+            queryWrapper.eq("c_name", courseDetails.getCName());
             List<CourseDetails> getList = courseDetailsMapper.selectList(queryWrapper);
             if (getList != null && !getList.isEmpty()) {
                 if (getList.size() > 1 || (getList.size() == 1 && !courseDetails.getId().equals(getList.get(0).getId()))) {
@@ -207,39 +207,35 @@ public class CourseDetailsServiceImpl extends ServiceImpl<CourseDetailsMapper, C
     }
 
 
-    public static int differentDays(Date date1,Date date2)
-    {
+    public static int differentDays(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
-        int day1= cal1.get(Calendar.DAY_OF_YEAR);
+        int day1 = cal1.get(Calendar.DAY_OF_YEAR);
         int day2 = cal2.get(Calendar.DAY_OF_YEAR);
 
         int year1 = cal1.get(Calendar.YEAR);
         int year2 = cal2.get(Calendar.YEAR);
-        if(year1 != year2)   //同一年
+        if (year1 != year2)   //同一年
         {
-            int timeDistance = 0 ;
-            for(int i = year1 ; i < year2 ; i ++)
-            {
-                if(i%4==0 && i%100!=0 || i%400==0)    //闰年
+            int timeDistance = 0;
+            for (int i = year1; i < year2; i++) {
+                if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0)    //闰年
                 {
                     timeDistance += 366;
-                }
-                else    //不是闰年
+                } else    //不是闰年
                 {
                     timeDistance += 365;
                 }
             }
 
-            return timeDistance + (day2-day1) ;
-        }
-        else    //不同年
+            return timeDistance + (day2 - day1);
+        } else    //不同年
         {
-            System.out.println("判断day2 - day1 : " + (day2-day1));
-            return day2-day1;
+            System.out.println("判断day2 - day1 : " + (day2 - day1));
+            return day2 - day1;
         }
     }
 }

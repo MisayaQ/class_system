@@ -47,9 +47,6 @@ public class CourseMenuController {
     @Autowired
     private ICourseMenuService iCourseMenuService;
 
-    @Autowired
-    private ISysUserService iSysUserService;
-
     @ApiOperation(value="新增", notes="新增")
     @PostMapping("/addCourseMenu")
     public Ret addCourseMenu(@RequestBody CourseMenu courseMenu) {

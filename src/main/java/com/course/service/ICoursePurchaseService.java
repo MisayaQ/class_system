@@ -5,6 +5,7 @@ import com.course.common.CountResult;
 import com.course.entity.CoursePurchase;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -24,4 +25,10 @@ public interface ICoursePurchaseService extends IService<CoursePurchase> {
     List<CoursePurchase> queryPurByPage(CoursePurchase coursePurchase);
 
     Ret savePurches(CoursePurchase coursePurchase);
+
+    //统计总数
+    Ret getPurchaseCountAll(String countType) throws ParseException;
+
+    //统计图
+    Ret getPurchaseCount(String countType);
 }

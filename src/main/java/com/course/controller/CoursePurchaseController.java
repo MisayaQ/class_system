@@ -131,77 +131,13 @@ public class CoursePurchaseController {
     @ApiOperation(value = "统计总数", notes = "")
     @GetMapping("/getPurchaseByCountAll")
     public Ret getPurchaseByCountAll(String countType) throws Exception {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        Date stDate = new Date();
-        Date enDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String endStr = sdf.format(enDate);
-        Calendar cal = Calendar.getInstance();
-        List<CountResult> getList = new ArrayList<>();
-        CoursePurchase coursePurchase = new CoursePurchase();
-        if ("day".equals(countType)) {
-            cal.add(Calendar.DATE, -7);
-            stDate = cal.getTime();
-            String startStr = sdf.format(stDate);
-        } else if ("month".equals(countType)) {
-            int month = cal.get(Calendar.MONTH) + 1;
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            stDate = format.parse(date);
-        } else if ("year".equals(countType)) {
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-01-01 00:00:00";
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            stDate = format.parse(date);
-        } else {
-            return Ret.error().setMsg("只能为day,month,year类型");
-        }
-        queryWrapper.gt("created_time", stDate);
-        queryWrapper.lt("created_time", enDate);
-        getList = iCoursePurchaseService.list(queryWrapper);
-        int counts = 0;
-        if (getList != null && !getList.isEmpty()) {
-            counts = getList.size();
-        }
-        return Ret.ok().setData(counts);
+        return iCoursePurchaseService.getPurchaseCountAll(countType);
     }
 
     @ApiOperation(value = "统计图", notes = "")
     @GetMapping("/getPurchaseByCount")
     public Ret getPurchaseByCount(String countType) throws Exception {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        Date stDate = new Date();
-        Date enDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String endStr = sdf.format(enDate);
-        Calendar cal = Calendar.getInstance();
-        List<CountResult> getList = new ArrayList<>();
-        CoursePurchase coursePurchase = new CoursePurchase();
-        if ("day".equals(countType)) {
-            cal.add(Calendar.DATE, -7);
-            stDate = cal.getTime();
-            String startStr = sdf.format(stDate);
-            coursePurchase.setTime1(startStr);
-            coursePurchase.setTime2(endStr);
-            getList = iCoursePurchaseService.countPurchaseDataByDay(coursePurchase);
-        } else if ("month".equals(countType)) {
-            int month = cal.get(Calendar.MONTH) + 1;
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-" + String.valueOf(month) + "-01 00:00:00";
-            coursePurchase.setTime1(date);
-            coursePurchase.setTime2(endStr);
-            getList = iCoursePurchaseService.countPurchaseDataByDay(coursePurchase);
-        } else if ("year".equals(countType)) {
-            int year = cal.get(Calendar.YEAR);
-            String date = String.valueOf(year) + "-01-01 00:00:00";
-            coursePurchase.setTime1(date);
-            coursePurchase.setTime2(endStr);
-            getList = iCoursePurchaseService.countPurchaseDataByMonth(coursePurchase);
-        } else {
-            return Ret.error().setMsg("只能为day,month,year类型");
-        }
-        return Ret.ok().setData(getList);
+        return iCoursePurchaseService.getPurchaseCount(countType);
     }
 
     @ApiOperation(value = "课程购买人数", notes = "")

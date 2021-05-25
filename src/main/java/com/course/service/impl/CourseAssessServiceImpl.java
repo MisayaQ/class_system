@@ -75,6 +75,7 @@ public class CourseAssessServiceImpl extends ServiceImpl<CourseAssessMapper, Cou
             }
         }
         list.setRecords(getList);
+        list.setTotal(getList.size());
         return Ret.ok().setData(list);
     }
 
