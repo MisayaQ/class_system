@@ -23,4 +23,6 @@ public interface CoursePurchaseMapper extends BaseMapper<CoursePurchase> {
     List<CountResult> countPurchaseDataByMonth(CoursePurchase coursePurchase);
 
     List<CoursePurchase> queryPurByPage(CoursePurchase coursePurchase);
+
+    Integer queryPurByCount(CoursePurchase coursePurchase);
 }

@@ -32,6 +32,24 @@
         order by updated_time desc,id
         limit #{page},#{pagesize}
     </select>
+    <select id="queryPurByCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        course_assess
+        left join course_details on course_assess.course_id = course_details.id
+        left join sys_user on course_assess.user_id = sys_user.id
+        where 1=1
+        <if test="courseId != null">
+            and course_assess.course_id = #{courseId}
+        </if>
+        <if test="courseName != null">
+            and course_details.c_name like #{courseName}
+        </if>
+        <if test="userName != null">
+            and sys_user.uname like #{userName}
+        </if>
+    </select>
 
 
 </mapper>

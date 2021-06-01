@@ -58,10 +58,9 @@ public class CourseAssessServiceImpl extends ServiceImpl<CourseAssessMapper, Cou
         }
         queryWrapper.orderByAsc("created_time");
         List<CourseAssess> getList = courseAssessMapper.queryPurByPage(courseAssessquery);
+        Integer count = courseAssessMapper.queryPurByCount(courseAssessquery);
+        System.out.println(getList.size());
         Page<CourseAssess> list = courseAssessMapper.selectPage(pageInfo,queryWrapper);
-        for (CourseAssess assess : getList) {
-            System.out.println(assess.getAssessLevel());
-        }
         if (getList != null && !getList.isEmpty()) {
             for (CourseAssess cour : getList) {
                 if (StringUtils.isNotEmpty(cour.getUserId())) {
@@ -75,7 +74,7 @@ public class CourseAssessServiceImpl extends ServiceImpl<CourseAssessMapper, Cou
             }
         }
         list.setRecords(getList);
-        list.setTotal(getList.size());
+        list.setTotal(count);
         return Ret.ok().setData(list);
     }
 

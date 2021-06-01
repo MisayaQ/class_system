@@ -50,8 +50,30 @@
         <if test="uname != null">
             and sys_user.uname like #{uname}
         </if>
-        order by updated_time desc,id
+        order by created_time desc,id
         limit #{page},#{pagesize}
+    </select>
+
+    <select id="queryPurByCount" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM
+        course_purchase
+        left join course_details on course_purchase.details_id=course_details.id
+        left join sys_user on course_purchase.user_id = sys_user.id
+        where 1=1
+        <if test="courseName != null">
+            and course_details.c_name like #{courseName}
+        </if>
+        <if test="userId != null">
+            and course_purchase.user_id = #{userId}
+        </if>
+        <if test="state != null">
+            and course_purchase.state = #{state}
+        </if>
+        <if test="uname != null">
+            and sys_user.uname like #{uname}
+        </if>
     </select>
 
 </mapper>

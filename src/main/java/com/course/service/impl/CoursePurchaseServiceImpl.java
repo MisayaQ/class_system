@@ -1,13 +1,19 @@
 package com.course.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.course.base.Ret;
 import com.course.common.CountResult;
+import com.course.entity.CourseDetails;
 import com.course.entity.CoursePurchase;
+import com.course.entity.SysUser;
+import com.course.mapper.CourseDetailsMapper;
 import com.course.mapper.CoursePurchaseMapper;
+import com.course.mapper.SysUserMapper;
 import com.course.service.ICoursePurchaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.course.utils.UUIDUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +38,12 @@ public class CoursePurchaseServiceImpl extends ServiceImpl<CoursePurchaseMapper,
 
     @Autowired
     private CoursePurchaseMapper coursePurchaseMapper;
+
+    @Autowired
+    private CourseDetailsMapper courseDetailsMapper;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     @Override
     public List<CountResult>
@@ -145,5 +157,45 @@ public class CoursePurchaseServiceImpl extends ServiceImpl<CoursePurchaseMapper,
             return Ret.error().setMsg("只能为day,month,year类型");
         }
         return Ret.ok().setData(getList);
+    }
+
+    @Override
+    public Ret selectPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        CoursePurchase purchasequery = new CoursePurchase();
+        page = (page - 1) * pageSize;
+        purchasequery.setPage(page);
+        purchasequery.setPagesize(pageSize);
+        Page pageInfo = new Page();
+        if (StringUtils.isNotEmpty(coursePurchase.getUserId())) {
+            purchasequery.setUserId(coursePurchase.getUserId());
+        }
+        if (StringUtils.isNotEmpty(coursePurchase.getCourseName())) {
+            purchasequery.setCourseName("%" + coursePurchase.getCourseName() + "%");
+        }
+        if (StringUtils.isNotEmpty(coursePurchase.getUname())) {
+            purchasequery.setUname("%" + coursePurchase.getUname() + "%");
+        }
+        queryWrapper.orderByDesc("updated_time");
+        List<CoursePurchase> getList = coursePurchaseMapper.queryPurByPage(purchasequery);
+        Integer count = coursePurchaseMapper.queryPurByCount(purchasequery);
+        Page<CoursePurchase> list = coursePurchaseMapper.selectPage(pageInfo, queryWrapper);
+        if (getList != null && !getList.isEmpty()) {
+            for (CoursePurchase purchase : getList) {
+                if (StringUtils.isNotEmpty(purchase.getDetailsId())) {
+                    CourseDetails courseDetails = courseDetailsMapper.selectById(purchase.getDetailsId());
+                    SysUser user = sysUserMapper.selectById(purchase.getUserId());
+                    if (courseDetails != null) {
+                        purchase.setUserName(user.getUname());
+                        purchase.setCourseName(courseDetails.getCName());
+                        purchase.setStartTime(courseDetails.getStartTime());
+                        purchase.setEndTime(courseDetails.getEndTime());
+                    }
+                }
+            }
+        }
+        list.setRecords(getList);
+        list.setTotal(count);
+        return Ret.ok().setData(list);
     }
 }

@@ -31,4 +31,6 @@ public interface ICoursePurchaseService extends IService<CoursePurchase> {
 
     //统计图
     Ret getPurchaseCount(String countType);
+
+    Ret selectPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase);
 }

@@ -17,4 +17,6 @@ import java.util.List;
 public interface CourseAssessMapper extends BaseMapper<CourseAssess> {
 
     List<CourseAssess> queryPurByPage(CourseAssess courseAssessquery);
+
+    Integer queryPurByCount(CourseAssess courseAssessquery);
 }
