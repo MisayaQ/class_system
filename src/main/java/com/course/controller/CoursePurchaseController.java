@@ -58,6 +58,42 @@ public class CoursePurchaseController {
     @ApiOperation(value = "分页查询", notes = "")
     @GetMapping("/getPurchaseByPage")
     public Ret getPurchaseByPage(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        CoursePurchase purchasequery = new CoursePurchase();
+        purchasequery.setPage((page - 1) * pageSize);
+        purchasequery.setPagesize(pageSize);
+        if (StringUtils.isNotEmpty(coursePurchase.getUserId())) {
+            purchasequery.setUserId(coursePurchase.getUserId());
+        }
+        if (StringUtils.isNotEmpty(coursePurchase.getCourseName())) {
+            purchasequery.setCourseName("%" + coursePurchase.getCourseName() + "%");
+        }
+        if (StringUtils.isNotEmpty(coursePurchase.getUname())) {
+            purchasequery.setUname("%" + coursePurchase.getUname() + "%");
+        }
+        queryWrapper.orderByDesc("updated_time");
+        List<CoursePurchase> getList = iCoursePurchaseService.queryPurByPage(purchasequery);
+//        List<CoursePurchase> purList = getList.getRecords();
+        if (getList != null && !getList.isEmpty()) {
+            for (CoursePurchase purchase : getList) {
+                if (StringUtils.isNotEmpty(purchase.getDetailsId())) {
+                    CourseDetails courseDetails = iCourseDetailsService.getById(purchase.getDetailsId());
+                    SysUser user = iSysUserService.getById(purchase.getUserId());
+                    if (courseDetails != null) {
+                        purchase.setUserName(user.getUname());
+                        purchase.setCourseName(courseDetails.getCName());
+                        purchase.setStartTime(courseDetails.getStartTime());
+                        purchase.setEndTime(courseDetails.getEndTime());
+                    }
+                }
+            }
+        }
+        return Ret.ok().setData(getList);
+    }
+
+    @ApiOperation(value = "分页查询2", notes = "")
+    @GetMapping("/getPurchaseByPages")
+    public Ret getPurchaseByPages(Integer page, Integer pageSize, CoursePurchase coursePurchase) {
         return iCoursePurchaseService.selectPurchaseByPage(page,pageSize,coursePurchase);
     }
 
